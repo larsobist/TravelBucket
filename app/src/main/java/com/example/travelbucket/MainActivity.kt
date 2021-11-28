@@ -1,5 +1,6 @@
 package com.example.travelbucket
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,5 +22,10 @@ class MainActivity : AppCompatActivity() {
         val bucketAdapter = BucketAdapter(myBuckets)
         binding.recyclerBuckets.adapter = bucketAdapter
         binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
+
+        binding.btnAddBucket.setOnClickListener{
+            val intent = Intent(this,AddBucketActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

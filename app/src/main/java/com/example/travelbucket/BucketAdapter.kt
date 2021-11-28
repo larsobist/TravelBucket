@@ -21,7 +21,7 @@ class BucketAdapter(val myBuckets:MutableList<Bucket>): RecyclerView.Adapter<Buc
     class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(bucket: Bucket) {
             binding.textBucket.text = bucket.title
-            binding.imageBucket.setImageResource(bucket.image)
+            binding.imgBucket.setImageResource(bucket.image)
         }
     }
 }
