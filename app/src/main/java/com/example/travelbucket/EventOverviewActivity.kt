@@ -24,7 +24,7 @@ class EventOverviewActivity : AppCompatActivity() {
         myEvents.add(event3)
         myEvents.add(event4)
 
-        val eventAdapter = EventAdapter(myEvents)
+        val eventAdapter = EventAdapter(this, myEvents)
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
 

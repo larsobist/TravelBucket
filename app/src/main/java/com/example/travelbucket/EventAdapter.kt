@@ -1,11 +1,13 @@
 package com.example.travelbucket
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelbucket.databinding.EventViewBinding
 
-class EventAdapter(val myEvents:MutableList<Event>): RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+class EventAdapter(val mContext: Context, val myEvents:MutableList<Event>): RecyclerView.Adapter<EventAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = EventViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -20,11 +22,17 @@ class EventAdapter(val myEvents:MutableList<Event>): RecyclerView.Adapter<EventA
         return myEvents.size
     }
 
-    class ViewHolder(val binding: EventViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: EventViewBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event) {
             binding.textTitle.text = event.title
             binding.textDuration.text = "Duration: " + event.duration
             binding.textNotes.text = "Notes: " + event.notes
+        }
+        init {
+            binding.root.setOnClickListener {
+                val intent = Intent(mContext,EventDetailsActivity::class.java)
+                mContext.startActivity(intent)
+            }
         }
     }
 }
