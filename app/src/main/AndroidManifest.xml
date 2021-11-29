@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelBucket">
         <activity
+            android:name=".EventDetailsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true" />
+        <activity
+            android:name=".AddEventActivity"
+            android:exported="true" />
+        <activity
+            android:name=".EventOverviewActivity"
+            android:exported="true" />
+        <activity
             android:name=".AddBucketActivity"
             android:exported="true" />
         <activity

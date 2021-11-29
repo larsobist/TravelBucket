@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         myBuckets.add(Bucket(0,"Rome", R.drawable.rome))
         myBuckets.add(Bucket(0,"Tokyo", R.drawable.tokyo))
 
-        val bucketAdapter = BucketAdapter(myBuckets)
+        val bucketAdapter = BucketAdapter(this, myBuckets)
         binding.recyclerBuckets.adapter = bucketAdapter
         binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
 
@@ -40,10 +40,9 @@ class MainActivity : AppCompatActivity() {
     fun init() {
         GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
             myBuckets = bucketsDB.BucketsDAO().getAll() as MutableList<Bucket>
-            val bucketAdapter = BucketAdapter(myBuckets) //tell the numbersAdapter
-            //binding.recycler_buckets.adapter = bucketAdapter //display the data
-
+            //val bucketAdapter = BucketAdapter(this, myBuckets) //tell the numbersAdapter
+            //binding.recyclerBuckets.adapter = bucketAdapter //display the data
         }
-        //binding.recycler_buckets.layoutManager = LinearLayoutManager(this)
+        //binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
     }
 }
