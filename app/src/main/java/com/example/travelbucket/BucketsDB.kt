@@ -5,7 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Bucket::class], version = 1)
+//@Database(entities = [Bucket::class], version = 1)
+@Database(
+    entities = [
+        Bucket::class,
+        Event::class
+    ],
+    version = 1
+)
+
 abstract class BucketsDB : RoomDatabase(){
     abstract fun BucketsDAO(): BucketsDAO
 
@@ -20,7 +28,7 @@ abstract class BucketsDB : RoomDatabase(){
                     context.applicationContext,
                     BucketsDB::class.java,
                     "buckets_database"
-                )
+                ).allowMainThreadQueries()
                     .build()
                 INSTANCE = instance // return instance
                 instance

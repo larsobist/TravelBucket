@@ -6,5 +6,5 @@ import androidx.room.PrimaryKey
 data class Bucket(
     @PrimaryKey(autoGenerate = true) val id:Int,
     var title: String,
-    var image: Int //warum ein Int?
+    var image: Int
     )
