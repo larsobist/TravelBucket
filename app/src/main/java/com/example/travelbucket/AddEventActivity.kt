@@ -11,11 +11,15 @@ import android.widget.DatePicker
 import android.widget.TextView
 import com.example.travelbucket.databinding.ActivityAddEventBinding
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddEventActivity : AppCompatActivity() {
     val binding by lazy { ActivityAddEventBinding.inflate(layoutInflater) }
+    val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
 
     var btnDate: Button? = null
     var textDate: TextView? = null
@@ -77,7 +81,8 @@ class AddEventActivity : AppCompatActivity() {
             if (binding.textInputEditTextTitle.text!!.isEmpty()) {
                 binding.textInputLayoutTitle.error = "Title required!"
             } else {
-                var date = textDate
+                //var date = textDate //Luca
+                var date = textDate.toString() //Lars
                 Log.d("ITM", "Title: $date")
                 var title = (editTitle.text).toString()
                 //Log.d("ITM", "Title: $title")
