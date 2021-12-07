@@ -80,25 +80,24 @@ class AddEventActivity : AppCompatActivity() {
                 var date = textDate
                 Log.d("ITM", "Title: $date")
                 var title = (editTitle.text).toString()
-                Log.d("ITM", "Title: $title")
+                //Log.d("ITM", "Title: $title")
                 var costs = (editCosts.text).toString()
                 Log.d("ITM", "costs: $costs")
                 var location = (editLocation.text).toString()
-                Log.d("ITM", "location: $location")
+                //Log.d("ITM", "location: $location")
                 var notes = (editNotes.text).toString()
-                Log.d("ITM", "notes: $notes")
+                //Log.d("ITM", "notes: $notes")
                 var links = (editLinks.text).toString()
-                Log.d("ITM", "links: $links")
+                //Log.d("ITM", "links: $links")
                 var duration = (editDuration.text).toString()
-                Log.d("ITM", "duration: $duration")
+                //Log.d("ITM", "duration: $duration")
 
-
-
-                //val item = Bucket(0, title, 1) //warum ein int?
-                //GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
-                //    bucketsDB.BucketsDAO().insert(item)
+                val item = Event(0, title, costs, date, location, notes, links, duration)
+                Log.d("ITM", "$item")
+                GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
+                    bucketsDB.EventsDAO().insert(item)
                     //bucketsDB.BucketsDAO().nukeTable()
-                //}
+                }
 
                 val intent = Intent(this,EventOverviewActivity::class.java)
                 startActivity(intent)
