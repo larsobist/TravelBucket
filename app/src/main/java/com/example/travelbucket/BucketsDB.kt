@@ -16,6 +16,7 @@ import androidx.room.RoomDatabase
 
 abstract class BucketsDB : RoomDatabase(){
     abstract fun BucketsDAO(): BucketsDAO
+    abstract fun EventsDAO(): EventsDAO
 
     companion object {
         // Singleton prevents multiple instances of database opening at the same time.

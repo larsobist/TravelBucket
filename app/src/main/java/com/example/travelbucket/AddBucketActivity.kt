@@ -53,7 +53,8 @@ class AddBucketActivity : AppCompatActivity() {
                // Log.d("ITM", "Bild: $bild")
 
 
-                val item = Bucket(0, title, 1) //warum ein int?
+               // val item = Bucket(0, title, 1) //warum ein int?
+                val item = Bucket(0, title)
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insert(item)
                     //bucketsDB.BucketsDAO().nukeTable()

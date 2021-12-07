@@ -4,9 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.travelbucket.databinding.ActivityAddBucketBinding.inflate
 import com.example.travelbucket.databinding.ActivityEventOverviewBinding
-import com.example.travelbucket.databinding.ActivityMainBinding
 
 class EventOverviewActivity : AppCompatActivity() {
     val binding by lazy { ActivityEventOverviewBinding.inflate(layoutInflater) }

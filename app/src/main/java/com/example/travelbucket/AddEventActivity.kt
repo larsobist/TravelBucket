@@ -4,9 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.widget.doOnTextChanged
 import com.example.travelbucket.databinding.ActivityAddEventBinding
-import com.example.travelbucket.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -14,6 +12,8 @@ import kotlinx.coroutines.launch
 
 class AddEventActivity : AppCompatActivity() {
     val binding by lazy { ActivityAddEventBinding.inflate(layoutInflater) }
+    val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -52,13 +52,12 @@ class AddEventActivity : AppCompatActivity() {
                 var duration = (editDuration.text).toString()
                 Log.d("ITM", "duration: $duration")
 
-
-
-                //val item = Bucket(0, title, 1) //warum ein int?
-                //GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
-                //    bucketsDB.BucketsDAO().insert(item)
+                val item = Event(0, title, costs, date, location, notes, links, duration)
+                Log.d("ITM", "$item")
+                GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
+                    bucketsDB.EventsDAO().insert(item)
                     //bucketsDB.BucketsDAO().nukeTable()
-                //}
+                }
 
                 val intent = Intent(this,EventOverviewActivity::class.java)
                 startActivity(intent)

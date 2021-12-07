@@ -26,12 +26,15 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
     inner class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(bucket: Bucket) {
             binding.textBucket.text = bucket.title
-            binding.imgBucket.setImageResource(bucket.image)
+            //binding.imgBucket.setImageResource(bucket.image)
         }
         init {
             binding.root.setOnClickListener {
                 val intent = Intent(mContext,EventOverviewActivity::class.java)
                 mContext.startActivity(intent)
+
+
+
             }
         }
 
