@@ -19,6 +19,7 @@ data class Event(
     var location: String,
     var notes: String,
     var links: String,
-    var duration: String)
+    var duration: String
+    )
 
 
