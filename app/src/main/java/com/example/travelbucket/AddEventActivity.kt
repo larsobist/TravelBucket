@@ -24,6 +24,7 @@ class AddEventActivity : AppCompatActivity() {
     var btnDate: Button? = null
     var textDate: TextView? = null
     var cal = Calendar.getInstance()
+    var date: Date = Date(-1, -1, -1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -50,6 +51,7 @@ class AddEventActivity : AppCompatActivity() {
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                date = cal.getTime()
                 updateDateInView()
             }
         }
@@ -81,9 +83,7 @@ class AddEventActivity : AppCompatActivity() {
             if (binding.textInputEditTextTitle.text!!.isEmpty()) {
                 binding.textInputLayoutTitle.error = "Title required!"
             } else {
-                //var date = textDate //Luca
-                var date = textDate.toString() //Lars
-                Log.d("ITM", "Title: $date")
+                Log.d("ITM", "Title: ${date.toString()}")
                 var title = (editTitle.text).toString()
                 //Log.d("ITM", "Title: $title")
                 var costs = (editCosts.text).toString()
