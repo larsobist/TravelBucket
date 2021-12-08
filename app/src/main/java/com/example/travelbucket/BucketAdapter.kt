@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelbucket.databinding.BucketViewBinding
@@ -18,15 +20,33 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val bucket = myBuckets.get(position)
-        holder.bind(bucket)
+        holder.bind(bucket, position)
     }
     override fun getItemCount(): Int {
         return myBuckets.size
     }
     inner class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(bucket: Bucket) {
+        fun bind(bucket: Bucket,  position: Int) {
             binding.textBucket.text = bucket.title
             //binding.imgBucket.setImageResource(bucket.image)
+
+            // modify card view constraints
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(binding.constraintLayout)
+            // make card view top constraint correct
+            if (position == 0) {
+                constraintSet.connect(binding.cardView.id, ConstraintSet.TOP, ConstraintLayout.LayoutParams.PARENT_ID, ConstraintSet.TOP, 24.toDp(mContext))
+            }else {
+                constraintSet.connect(binding.cardView.id, ConstraintSet.TOP, ConstraintLayout.LayoutParams.PARENT_ID, ConstraintSet.TOP, 12.toDp(mContext))
+            }
+            // make card view bottom constraint correct
+            if (position == myBuckets.size-1) {
+                constraintSet.connect(binding.cardView.id, ConstraintSet.BOTTOM, ConstraintLayout.LayoutParams.PARENT_ID, ConstraintSet.BOTTOM, 24.toDp(mContext))
+            }else {
+                constraintSet.connect(binding.cardView.id, ConstraintSet.BOTTOM, ConstraintLayout.LayoutParams.PARENT_ID, ConstraintSet.BOTTOM, 12.toDp(mContext))
+            }
+            // apply constraints to layout
+            constraintSet.applyTo(binding.constraintLayout)
         }
         init {
             binding.root.setOnClickListener {
