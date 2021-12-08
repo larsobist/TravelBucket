@@ -12,8 +12,8 @@ import com.example.travelbucket.databinding.BucketViewBinding
 import kotlinx.coroutines.CoroutineScope
 
 
-class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
-
+class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, private val showDeleteMenu: (Boolean) -> Unit): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
+    private var smthSelected = false
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = BucketViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -29,6 +29,28 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
         fun bind(bucket: Bucket,  position: Int) {
             binding.textBucket.text = bucket.title
             //binding.imgBucket.setImageResource(bucket.image)
+
+            binding.cardView.setOnLongClickListener {
+                if (!smthSelected){
+                    binding.cardView.strokeWidth = 8
+                    bucket.selected = true
+                    smthSelected = true
+                    showDeleteMenu(true)
+                }
+                true
+            }
+
+            binding.cardView.setOnClickListener {
+                if (bucket.selected){
+                    binding.cardView.strokeWidth = 0
+                    bucket.selected = false
+                    smthSelected = false
+                    showDeleteMenu(false)
+                }else if (!smthSelected){
+                    val intent = Intent(mContext,EventOverviewActivity::class.java)
+                    mContext.startActivity(intent)
+                }
+            }
 
             // modify card view constraints
             val constraintSet = ConstraintSet()
@@ -48,7 +70,7 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
             // apply constraints to layout
             constraintSet.applyTo(binding.constraintLayout)
         }
-        init {
+/*        init {
             binding.root.setOnClickListener {
                 val intent = Intent(mContext,EventOverviewActivity::class.java)
                 mContext.startActivity(intent)
@@ -56,7 +78,7 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
 
 
             }
-        }
+        }*/
 
     }
 }

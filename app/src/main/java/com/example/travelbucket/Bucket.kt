@@ -8,5 +8,6 @@ data class Bucket(
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true) val id:Int,
     var title: String,
-    //var image: Int
+    //var image: Int,
+    var selected: Boolean
     )

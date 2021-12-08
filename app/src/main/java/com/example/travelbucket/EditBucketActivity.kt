@@ -33,7 +33,7 @@ class EditBucketActivity : AppCompatActivity() {
         }
 
         binding.btnCancel.setOnClickListener {
-            val intent = Intent(this,EventOverviewActivity::class.java)
+            val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
         }
 
@@ -41,7 +41,7 @@ class EditBucketActivity : AppCompatActivity() {
             if (binding.textInputEditText.text!!.isEmpty()) {
                 binding.textInputLayout.error = "Title required!"
             } else {
-                val intent = Intent(this,EventOverviewActivity::class.java)
+                val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }
         }
