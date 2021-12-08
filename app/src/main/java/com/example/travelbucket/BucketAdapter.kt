@@ -2,6 +2,7 @@ package com.example.travelbucket
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 
 
 class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, private val showDeleteMenu: (Boolean) -> Unit): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
-    private var smthSelected = false
+    var smthSelected = false
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = BucketViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)

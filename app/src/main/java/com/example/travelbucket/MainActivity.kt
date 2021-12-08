@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         builder.setMessage("Do you want to delete this bucket?")
         //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
         builder.setPositiveButton("Delete") { dialog, which ->
+            bucketAdapter.smthSelected = false
             /*Toast.makeText(applicationContext, "Bucket was deleted", Toast.LENGTH_SHORT).show()
             showDeleteMenu(false)*/
         }
