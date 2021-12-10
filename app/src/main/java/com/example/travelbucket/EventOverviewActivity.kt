@@ -11,29 +11,27 @@ import java.util.*
 class EventOverviewActivity : AppCompatActivity() {
     val binding by lazy { ActivityEventOverviewBinding.inflate(layoutInflater) }
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
-    var placeEvents = mutableListOf<Event>()
+    var bucketEvents = mutableListOf<Event>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        /*
         val bundle : Bundle?= intent.extras
-        val id = bundle!!.getInt("id")
-        val title = bundle!!.getString("title")
+        val bucketId = bundle!!.getInt("bucketId")
+        val bucketTitle = bundle!!.getString("bucketTitle")
 
-         */
+        init(bucketId)
+        Log.d("ITM","$bucketId, $bucketTitle")
 
-        init()
-        //Log.d("ITM","$id, $title")
+        supportActionBar?.setTitle(bucketTitle)
 
-        supportActionBar?.setTitle(title)
 
         val myEvents = mutableListOf<Event>()
         val event1 = Event(0,0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")
         val event2 = Event(0,0,"War Memorial of Korea", "0 Won", Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de","2h")
-        val event3 = Event(0,0,"Changdeokgung Palace", "4000 Won", Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","5h")
-        val event4 = Event(0,0,"National Museum of Korea", "0 Won", Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de","1h")
+        val event3 = Event(0,1,"Changdeokgung Palace", "4000 Won", Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","5h")
+        val event4 = Event(0,1,"National Museum of Korea", "0 Won", Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de","1h")
         myEvents.add(event1)
         myEvents.add(event2)
         myEvents.add(event3)
@@ -42,17 +40,25 @@ class EventOverviewActivity : AppCompatActivity() {
         myEvents.add(event2)
         myEvents.add(event3)
         myEvents.add(event4)
+
 
         var currentDate = getFirstDate(myEvents)
         bindDate(currentDate)
 
-        var displayedEvents = getDisplayedEvents(currentDate, myEvents)
-        val eventAdapter = EventAdapter(this, displayedEvents)
+        var displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
+        //val eventAdapter = EventAdapter(this, displayedEvents)
+        val eventAdapter = EventAdapter(this, bucketEvents)
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
 
         binding.btnAddEvent.setOnClickListener {
             val intent = Intent(this,AddEventActivity::class.java)
+            startActivity(intent)
+
+            intent.putExtra("bucketId", bucketId)
+            intent.putExtra("bucketTitle", bucketTitle)
+            Log.d("ITM","$bucketId, $bucketTitle")
+            setResult(RESULT_OK, intent)
             startActivity(intent)
         }
 
@@ -71,14 +77,12 @@ class EventOverviewActivity : AppCompatActivity() {
             displayedEvents = getDisplayedEvents(currentDate, myEvents)
             eventAdapter.update(displayedEvents)
         }
-
-
     }
 
-    fun init() {
+    fun init(bucketId: Int) {
         //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
-        placeEvents = bucketsDB.BucketsDAO().getAllEvents() as MutableList<Event>
-        Log.d("ITM", "Events: $placeEvents")
+        bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
+        Log.d("ITM", "Events: $bucketEvents")
         //val eventAdapter = EventAdapter(this, placeEvents) //tell the numbersAdapter
         //binding.recyclerEvents.adapter = eventAdapter //display the data
         //}

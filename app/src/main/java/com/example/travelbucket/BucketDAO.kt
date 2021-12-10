@@ -30,6 +30,6 @@ interface BucketsDAO {
 
     //get all Events for one Bucket
     @Transaction
-    @Query("SELECT * FROM bucket where bucketId = :bucketId")
-    fun getBucketWithEvents(bucketId : Int): List<BucketWithEvents>
+    @Query("SELECT * FROM event where bucketId = :bucketId")
+    fun getEventsOfBucket(bucketId : Int): List<Event>
 }

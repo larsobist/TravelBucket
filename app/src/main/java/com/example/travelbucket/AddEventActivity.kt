@@ -25,9 +25,14 @@ class AddEventActivity : AppCompatActivity() {
     var textDate: TextView? = null
     var cal = Calendar.getInstance()
     var date: Date = Date(-1, -1, -1)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+        val bucketTitle = bundle!!.getString("bucketTitle")
 
         var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTextTitle)
         var editCosts = findViewById<TextInputEditText>(R.id.textInputEditTextCosts)
@@ -72,9 +77,11 @@ class AddEventActivity : AppCompatActivity() {
         })
 
 
-
         binding.btnCancelEvent.setOnClickListener {
             val intent = Intent(this,EventOverviewActivity::class.java)
+            intent.putExtra("bucketId", bucketId)
+            intent.putExtra("bucketTitle", bucketTitle)
+            setResult(RESULT_OK, intent)
             startActivity(intent)
         }
 
@@ -85,19 +92,13 @@ class AddEventActivity : AppCompatActivity() {
             } else {
                 Log.d("ITM", "Title: ${date.toString()}")
                 var title = (editTitle.text).toString()
-                //Log.d("ITM", "Title: $title")
                 var costs = (editCosts.text).toString()
-                Log.d("ITM", "costs: $costs")
                 var location = (editLocation.text).toString()
-                //Log.d("ITM", "location: $location")
                 var notes = (editNotes.text).toString()
-                //Log.d("ITM", "notes: $notes")
                 var links = (editLinks.text).toString()
-                //Log.d("ITM", "links: $links")
                 var duration = (editDuration.text).toString()
-                //Log.d("ITM", "duration: $duration")
 
-                val item = Event(0, 0,title, costs, date, location, notes, links, duration)
+                val item = Event(0, bucketId,title, costs, date, location, notes, links, duration)
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertEvent(item)
@@ -105,6 +106,9 @@ class AddEventActivity : AppCompatActivity() {
                 }
 
                 val intent = Intent(this,EventOverviewActivity::class.java)
+                intent.putExtra("bucketId", bucketId)
+                intent.putExtra("bucketTitle", bucketTitle)
+                setResult(RESULT_OK, intent)
                 startActivity(intent)
             }
         }

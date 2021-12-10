@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(position: Int) {
                 Log.d("ITM","Item $position clicked")
                 val intent = Intent(this@MainActivity, EventOverviewActivity::class.java)
-                intent.putExtra("id", myBuckets[position].bucketId)
-                intent.putExtra("title", myBuckets[position].title)
+                intent.putExtra("bucketId", myBuckets[position].bucketId)
+                intent.putExtra("bucketTitle", myBuckets[position].title)
                 Log.d("ITM","${myBuckets[position].title}")
                 setResult(RESULT_OK, intent)
                 startActivity(intent)
