@@ -102,7 +102,6 @@ class AddEventActivity : AppCompatActivity() {
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertEvent(item)
-                    //bucketsDB.BucketsDAO().nukeTable()
                 }
 
                 val intent = Intent(this,EventOverviewActivity::class.java)
