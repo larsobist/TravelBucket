@@ -1,7 +1,6 @@
 package com.example.travelbucket
 
 import androidx.room.*
-import java.util.*
 
 @Dao
 interface BucketsDAO {
@@ -12,6 +11,13 @@ interface BucketsDAO {
     //insert event
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(event: Event)
+
+    //delete specific bucket
+    @Query("DELETE FROM bucket WHERE bucketId = :bucketId")
+    fun deleteBucket(bucketId: Int)
+    //delete events from deleted bucket
+    @Query("DELETE FROM event WHERE bucketId = :bucketId")
+    fun deleteEventsFromDeletedBucket(bucketId: Int)
 
     //delete specific event
     @Query("DELETE FROM event WHERE eventId = :eventId")

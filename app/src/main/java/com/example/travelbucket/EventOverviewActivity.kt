@@ -58,6 +58,13 @@ class EventOverviewActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnDelete.setOnClickListener{
+            val intent = Intent(this,MainActivity::class.java)
+            bucketsDB.BucketsDAO().deleteBucket(bucketId)
+            bucketsDB.BucketsDAO().deleteEventsFromDeletedBucket(bucketId)
+            startActivity(intent)
+        }
+
         binding.btnBack.setOnClickListener {
             currentDate = prevDate(currentDate)
             bindDate(currentDate)
