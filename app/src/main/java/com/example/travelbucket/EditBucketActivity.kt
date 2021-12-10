@@ -7,15 +7,25 @@ import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import com.example.travelbucket.databinding.ActivityAddBucketBinding
 import com.example.travelbucket.databinding.ActivityEditBucketBinding
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class EditBucketActivity : AppCompatActivity() {
     val binding by lazy { ActivityEditBucketBinding.inflate(layoutInflater) }
+    val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+        supportActionBar?.setTitle("Edit Bucket")
+
+        var editTitle = findViewById<TextInputEditText>(R.id.textInputEditText)
+
+        setContent(bucketId)
 
         binding.textInputEditText.doOnTextChanged { text, start, before, count ->
             if (text!!.isEmpty()) {
@@ -41,10 +51,24 @@ class EditBucketActivity : AppCompatActivity() {
             if (binding.textInputEditText.text!!.isEmpty()) {
                 binding.textInputLayout.error = "Title required!"
             } else {
-                val intent = Intent(this,MainActivity::class.java)
+                var title = (editTitle.text).toString()
+                //bild
+                GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
+                    //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs, date, location, notes, links, duration)
+                    bucketsDB.BucketsDAO().updateBucket(bucketId, title)
+                }
+
+                val intent = Intent(this,EventOverviewActivity::class.java)
+                intent.putExtra("bucketId", bucketId)
+                setResult(RESULT_OK, intent)
                 startActivity(intent)
             }
         }
+    }
+    fun setContent(bucketId: Int){
+        var bucket = bucketsDB.BucketsDAO().getBucket(bucketId)
+        binding.textInputEditText.setText(bucket.title)
+        //bild fehlt
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

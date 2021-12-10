@@ -65,6 +65,13 @@ class EventOverviewActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnEdit.setOnClickListener{
+            val intent = Intent(this,EditBucketActivity::class.java)
+            intent.putExtra("bucketId", bucketId)
+            setResult(RESULT_OK, intent)
+            startActivity(intent)
+        }
+
         binding.btnBack.setOnClickListener {
             currentDate = prevDate(currentDate)
             bindDate(currentDate)

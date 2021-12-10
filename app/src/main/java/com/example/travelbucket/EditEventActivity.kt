@@ -101,8 +101,8 @@ class EditEventActivity : AppCompatActivity() {
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
-                val item = Event(0, bucketId, title, costs, date, location, notes, links, duration)
-                Log.d("ITM", "$item")
+                //val item = Event(0, bucketId, title, costs, date, location, notes, links, duration)
+                //Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs, date, location, notes, links, duration)
                     bucketsDB.BucketsDAO().updateEvent(eventId, title, costs, location, notes, links, duration)
@@ -124,7 +124,7 @@ class EditEventActivity : AppCompatActivity() {
 
     fun setTitleInBar(bucketId :Int){
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
-        supportActionBar?.setTitle(bucketTitle)
+        supportActionBar?.setTitle("$bucketTitle: Edit Event")
     }
     fun setContent(eventId: Int){
         var event = bucketsDB.BucketsDAO().getEvent(eventId)

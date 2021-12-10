@@ -36,6 +36,10 @@ interface BucketsDAO {
         duration: String
     )
 
+    //update specific bucket
+    @Query("UPDATE bucket SET title=:title WHERE bucketId = :bucketId")
+    fun updateBucket(bucketId: Int, title: String)
+
     //delete all
     @Query("DELETE FROM Bucket")
     fun nukeTable()
@@ -57,8 +61,12 @@ interface BucketsDAO {
     @Query("SELECT * FROM event where bucketId = :bucketId")
     fun getEventsOfBucket(bucketId : Int): List<Event>
 
-    //get all Events for one Bucket
+    //get specific Event
     @Transaction
     @Query("SELECT * FROM event where eventId = :eventId")
     fun getEvent(eventId : Int): Event
+
+    @Transaction
+    @Query("SELECT * FROM bucket where bucketId = :bucketId")
+    fun getBucket(bucketId: Int): Bucket
 }
