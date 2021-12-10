@@ -3,6 +3,7 @@ package com.example.travelbucket
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -44,9 +45,22 @@ class MainActivity : AppCompatActivity() {
 
     fun init() {
         //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
-            myBuckets = bucketsDB.BucketsDAO().getAll() as MutableList<Bucket>
-            bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) } //tell the numbersAdapter
-            binding.recyclerBuckets.adapter = bucketAdapter //display the data
+        myBuckets = bucketsDB.BucketsDAO().getAllBuckets() as MutableList<Bucket>
+        val bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) } //tell the numbersAdapter
+        binding.recyclerBuckets.adapter = bucketAdapter //display the data
+        bucketAdapter.setOnItemListener(object : BucketAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                Log.d("ITM","Item $position clicked")
+                val intent = Intent(this@MainActivity, EventOverviewActivity::class.java)
+                intent.putExtra("id", myBuckets[position].bucketId)
+                intent.putExtra("title", myBuckets[position].title)
+                Log.d("ITM","${myBuckets[position].title}")
+                setResult(RESULT_OK, intent)
+                startActivity(intent)
+
+            }
+
+        })
         //}
         //binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
     }

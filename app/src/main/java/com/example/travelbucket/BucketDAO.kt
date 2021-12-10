@@ -6,17 +6,30 @@ import androidx.room.*
 interface BucketsDAO {
     //insert bucket
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(Bucket: Bucket)
+    fun insertBucket(bucket: Bucket)
+
+    //insert event
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertEvent(event: Event)
 
     //delete specific
     @Delete
-    fun delete(Bucket: Bucket)
+    fun delete(bucket: Bucket)
 
     //delete all
     @Query("DELETE FROM Bucket")
     fun nukeTable()
 
-    //get all
+    //get all Buckets
     @Query("SELECT * FROM Bucket")
-    fun getAll(): List<Bucket>
+    fun getAllBuckets(): List<Bucket>
+
+    //get all Events
+    @Query("SELECT * FROM Event")
+    fun getAllEvents(): List<Event>
+
+    //get all Events for one Bucket
+    @Transaction
+    @Query("SELECT * FROM bucket where bucketId = :bucketId")
+    fun getBucketWithEvents(bucketId : Int): List<BucketWithEvents>
 }

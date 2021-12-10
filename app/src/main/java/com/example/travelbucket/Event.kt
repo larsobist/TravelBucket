@@ -6,17 +6,11 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import java.util.*
 
-@Entity(tableName = "Event",
-    foreignKeys = arrayOf(ForeignKey(entity = Bucket::class,
-    parentColumns = arrayOf("id"),
-    childColumns = arrayOf("id"),
-    onDelete = ForeignKey.CASCADE)))
-
+@Entity
 @TypeConverters(Converters::class)
-
 data class Event(
-    //val foreignKey: Int,
-    @PrimaryKey(autoGenerate = true) val id:Int,
+    @PrimaryKey(autoGenerate = true) val eventId:Int,
+    val bucketId : Int,
     var title: String,
     var costs: String,
     var date: Date,

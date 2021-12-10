@@ -3,10 +3,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Bucket")
+@Entity
 data class Bucket(
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true) val id:Int,
+    @PrimaryKey(autoGenerate = true) val bucketId:Int,
     var title: String,
     //var image: Int,
     var selected: Boolean

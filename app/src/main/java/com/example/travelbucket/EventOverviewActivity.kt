@@ -17,13 +17,23 @@ class EventOverviewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        /*
+        val bundle : Bundle?= intent.extras
+        val id = bundle!!.getInt("id")
+        val title = bundle!!.getString("title")
+
+         */
+
         init()
+        //Log.d("ITM","$id, $title")
+
+        supportActionBar?.setTitle(title)
 
         val myEvents = mutableListOf<Event>()
-        val event1 = Event(0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")
-        val event2 = Event(0,"War Memorial of Korea", "0 Won", Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de","2h")
-        val event3 = Event(0,"Changdeokgung Palace", "4000 Won", Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","5h")
-        val event4 = Event(0,"National Museum of Korea", "0 Won", Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de","1h")
+        val event1 = Event(0,0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")
+        val event2 = Event(0,0,"War Memorial of Korea", "0 Won", Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de","2h")
+        val event3 = Event(0,0,"Changdeokgung Palace", "4000 Won", Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","5h")
+        val event4 = Event(0,0,"National Museum of Korea", "0 Won", Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de","1h")
         myEvents.add(event1)
         myEvents.add(event2)
         myEvents.add(event3)
@@ -67,8 +77,8 @@ class EventOverviewActivity : AppCompatActivity() {
 
     fun init() {
         //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
-        placeEvents = bucketsDB.EventsDAO().getAll() as MutableList<Event>
-        Log.d("ITM", "Title: $placeEvents")
+        placeEvents = bucketsDB.BucketsDAO().getAllEvents() as MutableList<Event>
+        Log.d("ITM", "Events: $placeEvents")
         //val eventAdapter = EventAdapter(this, placeEvents) //tell the numbersAdapter
         //binding.recyclerEvents.adapter = eventAdapter //display the data
         //}

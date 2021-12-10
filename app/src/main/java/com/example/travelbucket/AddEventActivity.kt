@@ -97,10 +97,10 @@ class AddEventActivity : AppCompatActivity() {
                 var duration = (editDuration.text).toString()
                 //Log.d("ITM", "duration: $duration")
 
-                val item = Event(0, title, costs, date, location, notes, links, duration)
+                val item = Event(0, 0,title, costs, date, location, notes, links, duration)
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
-                    bucketsDB.EventsDAO().insert(item)
+                    bucketsDB.BucketsDAO().insertEvent(item)
                     //bucketsDB.BucketsDAO().nukeTable()
                 }
 
