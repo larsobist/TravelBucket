@@ -22,10 +22,10 @@ class EventOverviewActivity : AppCompatActivity() {
         val bucketTitle = bundle!!.getString("bucketTitle")
 
         init(bucketId)
+
         Log.d("ITM","$bucketId, $bucketTitle")
 
         supportActionBar?.setTitle(bucketTitle)
-
 
         val myEvents = mutableListOf<Event>()
         val event1 = Event(0,0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")
@@ -54,7 +54,6 @@ class EventOverviewActivity : AppCompatActivity() {
         binding.btnAddEvent.setOnClickListener {
             val intent = Intent(this,AddEventActivity::class.java)
             startActivity(intent)
-
             intent.putExtra("bucketId", bucketId)
             intent.putExtra("bucketTitle", bucketTitle)
             Log.d("ITM","$bucketId, $bucketTitle")
@@ -82,11 +81,17 @@ class EventOverviewActivity : AppCompatActivity() {
     fun init(bucketId: Int) {
         //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
         bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
-        Log.d("ITM", "Events: $bucketEvents")
-        //val eventAdapter = EventAdapter(this, placeEvents) //tell the numbersAdapter
-        //binding.recyclerEvents.adapter = eventAdapter //display the data
-        //}
-        //binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
+        val eventsAdapter = EventAdapter(this, bucketEvents)
+        binding.recyclerEvents.adapter = eventsAdapter //display the data
+        eventsAdapter.setOnItemListener(object : EventAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@EventOverviewActivity, EventDetailsActivity::class.java)
+                intent.putExtra("bucketId", bucketId)
+                intent.putExtra("eventId", bucketEvents[position].eventId)
+                setResult(RESULT_OK, intent)
+                startActivity(intent)
+            }
+        })
     }
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
