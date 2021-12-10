@@ -19,13 +19,10 @@ class EventOverviewActivity : AppCompatActivity() {
 
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
-        val bucketTitle = bundle!!.getString("bucketTitle")
+        val bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
+        supportActionBar?.setTitle(bucketTitle)
 
         init(bucketId)
-
-        Log.d("ITM","$bucketId, $bucketTitle")
-
-        supportActionBar?.setTitle(bucketTitle)
 
         val myEvents = mutableListOf<Event>()
         val event1 = Event(0,0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")

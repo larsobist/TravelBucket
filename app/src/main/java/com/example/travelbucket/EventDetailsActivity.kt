@@ -31,6 +31,14 @@ class EventDetailsActivity : AppCompatActivity() {
             setResult(RESULT_OK, intent)
             startActivity(intent)
         }
+
+        binding.btnDeleteEvent.setOnClickListener{
+            val intent = Intent(this,EventOverviewActivity::class.java)
+            intent.putExtra("bucketId", bucketId)
+            bucketsDB.BucketsDAO().deleteEvent(eventId)
+            setResult(RESULT_OK, intent)
+            startActivity(intent)
+        }
     }
     fun setTitleInBar(bucketId :Int){
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)

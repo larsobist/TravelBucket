@@ -13,6 +13,10 @@ interface BucketsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEvent(event: Event)
 
+    //delete specific event
+    @Query("DELETE FROM event WHERE eventId = :eventId")
+    fun deleteEvent(eventId: Int)
+
     //@Query("UPDATE event SET title=:title, costs=:costs, date=:date, location=:location, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
     @Query("UPDATE event SET title=:title, costs=:costs, location=:location, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
     fun updateEvent(

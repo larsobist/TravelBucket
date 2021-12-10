@@ -47,11 +47,8 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerBuckets.adapter = bucketAdapter //display the data
         bucketAdapter.setOnItemListener(object : BucketAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
-                Log.d("ITM","Item $position clicked")
                 val intent = Intent(this@MainActivity, EventOverviewActivity::class.java)
                 intent.putExtra("bucketId", myBuckets[position].bucketId)
-                intent.putExtra("bucketTitle", myBuckets[position].title)
-                Log.d("ITM","${myBuckets[position].title}")
                 setResult(RESULT_OK, intent)
                 startActivity(intent)
             }
