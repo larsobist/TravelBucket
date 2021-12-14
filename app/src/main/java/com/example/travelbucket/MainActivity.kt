@@ -99,4 +99,7 @@ class MainActivity : AppCompatActivity() {
         builder.show()
 
     }
+    override fun onBackPressed() {
+        //super.onBackPressed()
+    }
 }

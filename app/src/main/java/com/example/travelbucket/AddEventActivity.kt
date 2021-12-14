@@ -108,7 +108,6 @@ class AddEventActivity : AppCompatActivity() {
 
                 val intent = Intent(this,EventOverviewActivity::class.java)
                 intent.putExtra("bucketId", bucketId)
-                intent.putExtra("bucketTitle", bucketTitle)
                 setResult(RESULT_OK, intent)
                 startActivity(intent)
             }
@@ -123,5 +122,16 @@ class AddEventActivity : AppCompatActivity() {
         val myFormat = "MM/dd/yyyy" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         textDate!!.text = sdf.format(cal.getTime())
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+
+        val intent = Intent(this,EventOverviewActivity::class.java)
+        intent.putExtra("bucketId", bucketId)
+        setResult(RESULT_OK, intent)
+        startActivity(intent)
     }
 }

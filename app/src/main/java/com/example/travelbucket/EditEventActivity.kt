@@ -136,4 +136,17 @@ class EditEventActivity : AppCompatActivity() {
         binding.textInputEditTextNotes.setText(event.notes)
         binding.textInputEditTextLinks.setText(event.links)
     }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+        val eventId = bundle!!.getInt("eventId")
+
+        val intent = Intent(this,EventDetailsActivity::class.java)
+        intent.putExtra("bucketId", bucketId)
+        intent.putExtra("eventId", eventId)
+        setResult(RESULT_OK, intent)
+        startActivity(intent)
+    }
 }

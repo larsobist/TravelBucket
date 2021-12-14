@@ -77,4 +77,15 @@ class EditBucketActivity : AppCompatActivity() {
             binding.imgBucket.setImageURI(data?.data)
         }
     }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+
+        val intent = Intent(this,EventOverviewActivity::class.java)
+        intent.putExtra("bucketId", bucketId)
+        setResult(RESULT_OK, intent)
+        startActivity(intent)
+    }
 }

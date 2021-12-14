@@ -49,15 +49,13 @@ class AddBucketActivity : AppCompatActivity() {
                 var title = (editText.text).toString()
                 //val bild = editText.text
 
-                Log.d("ITM", "Title: $title")
                // Log.d("ITM", "Bild: $bild")
 
 
-               // val item = Bucket(0, title, 1) //warum ein int?
+               // val item = Bucket(0, title, 1)
                 val item = Bucket(0, title, false)
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertBucket(item)
-                    //bucketsDB.BucketsDAO().nukeTable()
                 }
 
                 val intent = Intent(this,MainActivity::class.java)
@@ -71,6 +69,13 @@ class AddBucketActivity : AppCompatActivity() {
         if (requestCode == 100 && resultCode == RESULT_OK) {
             binding.imgBucket.setImageURI(data?.data)
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
     }
 
 }

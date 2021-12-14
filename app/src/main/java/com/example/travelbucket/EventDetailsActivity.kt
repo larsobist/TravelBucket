@@ -40,6 +40,7 @@ class EventDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
     fun setTitleInBar(bucketId :Int){
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
         supportActionBar?.setTitle(bucketTitle)
@@ -53,5 +54,16 @@ class EventDetailsActivity : AppCompatActivity() {
         binding.textViewCosts.text = event.costs.toString()
         binding.textViewNotes.text = event.notes
         binding.textViewLinks.text = event.links
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+
+        val intent = Intent(this,EventOverviewActivity::class.java)
+        intent.putExtra("bucketId", bucketId)
+        setResult(RESULT_OK, intent)
+        startActivity(intent)
     }
 }
