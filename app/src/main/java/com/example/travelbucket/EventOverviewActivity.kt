@@ -24,20 +24,20 @@ class EventOverviewActivity : AppCompatActivity() {
 
         init(bucketId)
 
-        val myEvents = mutableListOf<Event>()
-        val event1 = Event(0,0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")
-        val event2 = Event(0,0,"War Memorial of Korea", "0 Won", Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de","2h")
-        val event3 = Event(0,1,"Changdeokgung Palace", "4000 Won", Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","5h")
-        val event4 = Event(0,1,"National Museum of Korea", "0 Won", Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de","1h")
-        myEvents.add(event1)
-        myEvents.add(event2)
-        myEvents.add(event3)
-        myEvents.add(event4)
-        myEvents.add(event1)
-        myEvents.add(event2)
-        myEvents.add(event3)
-        myEvents.add(event4)
 
+        val myEvents = mutableListOf<Event>()
+        val event1 = Event(0,0,"Gyeongbokgung Palace", 3000, Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de",3)
+        val event2 = Event(0,0,"War Memorial of Korea", 0, Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de",2)
+        val event3 = Event(0,1,"Changdeokgung Palace", 4000, Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de",5)
+        val event4 = Event(0,1,"National Museum of Korea", 0, Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de",1)
+        myEvents.add(event1)
+        myEvents.add(event2)
+        myEvents.add(event3)
+        myEvents.add(event4)
+        myEvents.add(event1)
+        myEvents.add(event2)
+        myEvents.add(event3)
+        myEvents.add(event4)
 
         var currentDate = getFirstDate(myEvents)
         bindDate(currentDate)
@@ -76,7 +76,7 @@ class EventOverviewActivity : AppCompatActivity() {
             currentDate = prevDate(currentDate)
             bindDate(currentDate)
 
-            displayedEvents = getDisplayedEvents(currentDate, myEvents)
+            displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
         }
 
@@ -84,7 +84,7 @@ class EventOverviewActivity : AppCompatActivity() {
             currentDate = nextDate(currentDate)
             bindDate(currentDate)
 
-            displayedEvents = getDisplayedEvents(currentDate, myEvents)
+            displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
         }
     }
@@ -103,6 +103,9 @@ class EventOverviewActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        dayPrice()
+        dayDuration()
     }
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
@@ -148,5 +151,22 @@ class EventOverviewActivity : AppCompatActivity() {
         c.time = currentDate
         c.add(Calendar.DATE, 1)
         return c.time
+    }
+
+    fun dayPrice(){
+        var sumCosts = 0
+        for (event in bucketEvents){
+            var costs = event.costs
+            sumCosts = sumCosts + costs
+        }
+        Log.d("ITM", "SumCosts: $sumCosts")
+    }
+    fun dayDuration(){
+        var sumDuration = 0
+        for (event in bucketEvents){
+            var duration = event.duration
+            sumDuration = sumDuration + duration
+        }
+        Log.d("ITM", "SumDuration: $sumDuration")
     }
 }

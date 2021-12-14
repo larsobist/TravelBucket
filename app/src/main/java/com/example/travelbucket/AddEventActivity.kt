@@ -34,6 +34,8 @@ class AddEventActivity : AppCompatActivity() {
         val bucketId = bundle!!.getInt("bucketId")
         val bucketTitle = bundle!!.getString("bucketTitle")
 
+        setTitleInBar(bucketId)
+
         var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTextTitle)
         var editCosts = findViewById<TextInputEditText>(R.id.textInputEditTextCosts)
         var editLocation = findViewById<TextInputEditText>(R.id.textInputEditTextLocation)
@@ -98,7 +100,7 @@ class AddEventActivity : AppCompatActivity() {
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
-                val item = Event(0, bucketId,title, costs, date, location, notes, links, duration)
+                val item = Event(0, bucketId,title, costs.toInt(), date, location, notes, links, duration.toInt())
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertEvent(item)
@@ -112,6 +114,11 @@ class AddEventActivity : AppCompatActivity() {
             }
         }
     }
+    fun setTitleInBar(bucketId :Int){
+        var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
+        supportActionBar?.setTitle("$bucketTitle: Add Event")
+    }
+
     private fun updateDateInView() {
         val myFormat = "MM/dd/yyyy" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.US)

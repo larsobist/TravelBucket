@@ -105,7 +105,7 @@ class EditEventActivity : AppCompatActivity() {
                 //Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs, date, location, notes, links, duration)
-                    bucketsDB.BucketsDAO().updateEvent(eventId, title, costs, location, notes, links, duration)
+                    bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), location, notes, links, duration.toInt())
                 }
 
                 val intent = Intent(this,EventDetailsActivity::class.java)
@@ -130,9 +130,9 @@ class EditEventActivity : AppCompatActivity() {
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
         binding.textInputEditTextTitle.setText(event.title)
         binding.textDate.text = event.date.toString()
-        binding.textInputEditTextDuration.setText(event.duration)
+        binding.textInputEditTextDuration.setText(event.duration.toString())
         binding.textInputEditTextLocation.setText(event.location)
-        binding.textInputEditTextCosts.setText(event.costs)
+        binding.textInputEditTextCosts.setText(event.costs.toString())
         binding.textInputEditTextNotes.setText(event.notes)
         binding.textInputEditTextLinks.setText(event.links)
     }

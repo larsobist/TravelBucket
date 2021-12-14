@@ -48,9 +48,9 @@ class EventDetailsActivity : AppCompatActivity() {
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
         binding.textViewTitle.text = event.title
         binding.textViewDate.text = event.date.toString()
-        binding.textViewDuration.text = event.duration
+        binding.textViewDuration.text = event.duration.toString()
         binding.textViewLocation.text = event.location
-        binding.textViewCosts.text = event.costs
+        binding.textViewCosts.text = event.costs.toString()
         binding.textViewNotes.text = event.notes
         binding.textViewLinks.text = event.links
     }

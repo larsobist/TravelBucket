@@ -12,12 +12,12 @@ data class Event(
     @PrimaryKey(autoGenerate = true) val eventId:Int,
     val bucketId : Int,
     var title: String,
-    var costs: String,
+    var costs: Int,
     var date: Date,
     var location: String,
     var notes: String,
     var links: String,
-    var duration: String
+    var duration: Int
     )
 
 

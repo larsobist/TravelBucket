@@ -28,12 +28,12 @@ interface BucketsDAO {
     fun updateEvent(
         eventId: Int,
         title: String,
-        costs: String,
+        costs: Int,
         //date: Date,
         location: String,
         notes: String,
         links: String,
-        duration: String
+        duration: Int
     )
 
     //update specific bucket
