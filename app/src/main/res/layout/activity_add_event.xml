@@ -54,7 +54,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:hint="Title"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextTitle"
@@ -72,7 +73,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:hint="Costs"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextCosts"
@@ -91,7 +93,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:hint="Location"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextLocation"
@@ -109,7 +112,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:hint="Notes"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextNotes"
@@ -127,7 +131,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:hint="Links"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextLinks"
@@ -146,7 +151,8 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="100dp"
                 android:hint="Duration"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTextDuration"
