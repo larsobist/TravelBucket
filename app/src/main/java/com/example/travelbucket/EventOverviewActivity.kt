@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelbucket.databinding.ActivityEventOverviewBinding
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EventOverviewActivity : AppCompatActivity() {
@@ -38,7 +39,7 @@ class EventOverviewActivity : AppCompatActivity() {
         myEvents.add(event3)
         myEvents.add(event4)
 
-        var currentDate = getFirstDate(myEvents)
+        var currentDate = getFirstDate(bucketEvents)
         bindDate(currentDate)
 
         var displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
@@ -107,24 +108,25 @@ class EventOverviewActivity : AppCompatActivity() {
     }
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
-        var firstEvent = myEvents[0]
-        for (i in myEvents) {
-            if (i.date.year <= firstEvent.date.year) {
-                if (i.date.month <= firstEvent.date.month) {
-                    if (i.date.date <= firstEvent.date.date) {
-                        firstEvent = i
-                    }
+        if (myEvents.isEmpty()){
+            Log.d("ITM","entered")
+            var cal = Calendar.getInstance()
+            return cal.getTime()
+        }else{
+            var firstEvent = myEvents[0]
+            for (i in 0 until myEvents.size) {
+                if (myEvents[i].date.before(firstEvent.date)) {
+                    firstEvent = myEvents[i]
                 }
             }
+            return firstEvent.date
         }
-        return firstEvent.date
     }
 
     fun bindDate(currentDate: Date) {
-        var yearStr = "${currentDate.year}"
-        var monthStr = if (currentDate.month  < 10) "0${currentDate.month}" else "${currentDate.month}"
-        var dayStr = if (currentDate.day  < 10) "0${currentDate.day}" else "${currentDate.day}"
-        binding.date.text = "$monthStr / $dayStr / $yearStr"
+        val myFormat = "MM/dd/yyyy" // mention the format you need
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding.date.text = sdf.format(currentDate)
     }
 
     fun getDisplayedEvents(currentDate: Date, myEvents: MutableList<Event>) : MutableList<Event> {

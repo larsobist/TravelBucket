@@ -100,6 +100,7 @@ class AddEventActivity : AppCompatActivity() {
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
+                Log.d("ITM","dateeeee $date")
                 val item = Event(0, bucketId,title, costs.toInt(), date, location, notes, links, duration.toInt())
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
