@@ -37,8 +37,8 @@ interface BucketsDAO {
     )
 
     //update specific bucket
-    @Query("UPDATE bucket SET title=:title WHERE bucketId = :bucketId")
-    fun updateBucket(bucketId: Int, title: String)
+    @Query("UPDATE bucket SET title=:title, description=:description WHERE bucketId = :bucketId")
+    fun updateBucket(bucketId: Int, title: String, description: String)
 
     //delete all
     @Query("DELETE FROM Bucket")

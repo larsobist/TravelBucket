@@ -60,6 +60,8 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
                 binding.textBucketPrice.text = "Total Cost: 0 ₩"
             }
 
+            binding.textBucketDescription.text = bucket.description
+
         /*
             binding.cardView.setOnLongClickListener {
                 if (!smthSelected){

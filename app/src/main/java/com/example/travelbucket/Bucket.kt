@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class Bucket(
     @PrimaryKey(autoGenerate = true) val bucketId:Int,
     var title: String,
-    //var image: Int,
-    var selected: Boolean
+    var description: String,
+    //var selected: Boolean
     )
