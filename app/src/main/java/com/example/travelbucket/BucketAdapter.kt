@@ -16,6 +16,7 @@ lateinit var mListener: BucketAdapter.onItemClickListener
 
 class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, private val showDeleteMenu: (Boolean) -> Unit): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
     var smthSelected = false
+    val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(mContext) } //binding of DB
 
     interface onItemClickListener{
         fun onItemClick(position: Int)
@@ -36,11 +37,28 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
     override fun getItemCount(): Int {
         return myBuckets.size
     }
+    fun getSum(bucketId : Int) : Int{
+        var bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
+        var sumCosts = 0
+        for (event in bucketEvents){
+            var costs = event.costs
+            sumCosts = sumCosts + costs
+        }
+        return sumCosts
+    }
+
     inner class ViewHolder(val binding:BucketViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
-    //inner class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(bucket: Bucket,  position: Int) {
+        //inner class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(bucket: Bucket, position: Int) {
             binding.textBucket.text = bucket.title
-            //binding.imgBucket.setImageResource(bucket.image)
+
+            var bucketId = bucket.bucketId
+            if(bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event> != emptyList<Event>()){
+                var price = getSum(bucketId)
+                binding.textBucketPrice.text = "Total Cost: " + price + " ₩"
+            }else{
+                binding.textBucketPrice.text = "Total Cost: 0 ₩"
+            }
 
         /*
             binding.cardView.setOnLongClickListener {
