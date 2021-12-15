@@ -44,7 +44,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
     inner class ViewHolder(val binding:EventViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event, position: Int) {
             binding.textTitle.text = event.title
-            binding.textDuration.text = "Duration: " + event.duration
+            binding.textDuration.text = "Duration: " + event.duration + "h"
             binding.textNotes.text = "Notes: " + event.notes
 
             // modify line constraints

@@ -24,7 +24,6 @@ class EventOverviewActivity : AppCompatActivity() {
 
         init(bucketId)
 
-
         val myEvents = mutableListOf<Event>()
         val event1 = Event(0,0,"Gyeongbokgung Palace", 3000, Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de",3)
         val event2 = Event(0,0,"War Memorial of Korea", 0, Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de",2)
@@ -53,7 +52,6 @@ class EventOverviewActivity : AppCompatActivity() {
             startActivity(intent)
             intent.putExtra("bucketId", bucketId)
             intent.putExtra("bucketTitle", bucketTitle)
-            Log.d("ITM","$bucketId, $bucketTitle")
             setResult(RESULT_OK, intent)
             startActivity(intent)
         }
