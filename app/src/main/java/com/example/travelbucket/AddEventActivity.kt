@@ -9,13 +9,19 @@ import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import com.example.travelbucket.databinding.ActivityAddEventBinding
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import android.R.string.no
+
+
+
 
 class AddEventActivity : AppCompatActivity() {
     val binding by lazy { ActivityAddEventBinding.inflate(layoutInflater) }
@@ -30,6 +36,7 @@ class AddEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        date.time = intent.getLongExtra("date", -1)
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
         val bucketTitle = bundle!!.getString("bucketTitle")
@@ -37,17 +44,20 @@ class AddEventActivity : AppCompatActivity() {
         setTitleInBar(bucketId)
 
         var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTextTitle)
+        var layoutTitle = findViewById<TextInputLayout>(R.id.textInputLayoutTitle)
         var editCosts = findViewById<TextInputEditText>(R.id.textInputEditTextCosts)
+        var layoutCosts = findViewById<TextInputLayout>(R.id.textInputLayoutCosts)
         var editLocation = findViewById<TextInputEditText>(R.id.textInputEditTextLocation)
         var editNotes = findViewById<TextInputEditText>(R.id.textInputEditTextNotes)
         var editLinks = findViewById<TextInputEditText>(R.id.textInputEditTextLinks)
         var editDuration = findViewById<TextInputEditText>(R.id.textInputEditTextDuration)
+        var layoutDuration = findViewById<TextInputLayout>(R.id.textInputLayoutDuration)
 
         // get the references from layout file
         textDate = binding.textDate
         btnDate = binding.btnDate
 
-        textDate!!.text = "--/--/----"
+        updateDateInView()
 
         // create an OnDateSetListener
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
@@ -82,6 +92,29 @@ class AddEventActivity : AppCompatActivity() {
 
         })
 
+        editTitle.addTextChangedListener {
+            if (editTitle.text!!.isEmpty()) {
+                layoutTitle.error = "Title required!"
+            } else{
+                layoutTitle.error = null
+            }
+        }
+
+        editCosts.addTextChangedListener {
+            if (editCosts.text!!.isEmpty()) {
+                layoutCosts.error = "Costs required!"
+            } else{
+                layoutCosts.error = null
+            }
+        }
+
+        editDuration.addTextChangedListener {
+            if (editDuration.text!!.isEmpty()) {
+                layoutDuration.error = "Duration required!"
+            } else{
+                layoutDuration.error = null
+            }
+        }
 
         binding.btnCancelEvent.setOnClickListener {
             val intent = Intent(this,EventOverviewActivity::class.java)
@@ -92,9 +125,12 @@ class AddEventActivity : AppCompatActivity() {
         }
 
         binding.btnSaveEvent.setOnClickListener {
-            // TODO implement validation of inputfields
-            if (binding.textInputEditTextTitle.text!!.isEmpty()) {
-                binding.textInputLayoutTitle.error = "Title required!"
+            if (editTitle.text!!.isEmpty()) {
+                layoutTitle.error = "Title required!"
+            } else if (editCosts.text!!.isEmpty()) {
+                layoutCosts.error = "Costs required!"
+            } else if (editDuration.text!!.isEmpty()) {
+                layoutDuration.error = "Duration required!"
             } else {
                 Log.d("ITM", "Title: ${date.toString()}")
                 var title = (editTitle.text).toString()
@@ -104,7 +140,6 @@ class AddEventActivity : AppCompatActivity() {
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
-                Log.d("ITM","dateeeee $date")
                 val item = Event(0, bucketId,title, costs.toInt(), date, location, notes, links, duration.toInt())
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
@@ -126,7 +161,7 @@ class AddEventActivity : AppCompatActivity() {
     private fun updateDateInView() {
         val myFormat = "MM/dd/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
-        textDate!!.text = sdf.format(cal.getTime())
+        textDate!!.text = sdf.format(date)
     }
 
     override fun onBackPressed() {

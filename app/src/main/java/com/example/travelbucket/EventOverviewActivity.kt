@@ -40,6 +40,7 @@ class EventOverviewActivity : AppCompatActivity() {
             startActivity(intent)
             intent.putExtra("bucketId", bucketId)
             intent.putExtra("bucketTitle", bucketTitle)
+            intent.putExtra("date", currentDate.getTime())
             setResult(RESULT_OK, intent)
             startActivity(intent)
         }
@@ -96,7 +97,6 @@ class EventOverviewActivity : AppCompatActivity() {
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
         if (myEvents.isEmpty()){
-            Log.d("ITM","entered")
             var cal = Calendar.getInstance()
             return cal.getTime()
         }else{
@@ -119,7 +119,6 @@ class EventOverviewActivity : AppCompatActivity() {
     fun getDisplayedEvents(currentDate: Date, myEvents: MutableList<Event>) : MutableList<Event> {
         val displayedEvents : MutableList<Event> = mutableListOf()
         for (i in myEvents) {
-            Log.d("ITM","Compare: ${i.date} with $currentDate")
             if (i.date == currentDate){
                 displayedEvents.add(i)
             }
