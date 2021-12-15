@@ -30,12 +30,14 @@ class AddBucketActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnChooseImage.setOnClickListener {
+        /*binding.btnChooseImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK).apply {
                 type = "image/*"
             }
             startActivityForResult(intent,100)
-        }
+        }*/
+
+         */
 
         binding.btnCancel.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
@@ -62,12 +64,12 @@ class AddBucketActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK) {
             binding.imgBucket.setImageURI(data?.data)
         }
-    }
+    }*/
 
     override fun onBackPressed() {
         //super.onBackPressed()

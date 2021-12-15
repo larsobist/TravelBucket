@@ -13,6 +13,7 @@ class EventOverviewActivity : AppCompatActivity() {
     val binding by lazy { ActivityEventOverviewBinding.inflate(layoutInflater) }
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
     var bucketEvents = mutableListOf<Event>()
+    var displayedEvents = mutableListOf<Event>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,26 +26,12 @@ class EventOverviewActivity : AppCompatActivity() {
 
         init(bucketId)
 
-        val myEvents = mutableListOf<Event>()
-        val event1 = Event(0,0,"Gyeongbokgung Palace", 3000, Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de",3)
-        val event2 = Event(0,0,"War Memorial of Korea", 0, Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de",2)
-        val event3 = Event(0,1,"Changdeokgung Palace", 4000, Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de",5)
-        val event4 = Event(0,1,"National Museum of Korea", 0, Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de",1)
-        myEvents.add(event1)
-        myEvents.add(event2)
-        myEvents.add(event3)
-        myEvents.add(event4)
-        myEvents.add(event1)
-        myEvents.add(event2)
-        myEvents.add(event3)
-        myEvents.add(event4)
-
         var currentDate = getFirstDate(bucketEvents)
         bindDate(currentDate)
 
-        var displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
+        displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
         //val eventAdapter = EventAdapter(this, displayedEvents)
-        val eventAdapter = EventAdapter(this, bucketEvents)
+        val eventAdapter = EventAdapter(this, displayedEvents)
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
 
@@ -91,13 +78,13 @@ class EventOverviewActivity : AppCompatActivity() {
     fun init(bucketId: Int) {
         //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
         bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
-        val eventsAdapter = EventAdapter(this, bucketEvents)
+        val eventsAdapter = EventAdapter(this, displayedEvents)
         binding.recyclerEvents.adapter = eventsAdapter //display the data
         eventsAdapter.setOnItemListener(object : EventAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@EventOverviewActivity, EventDetailsActivity::class.java)
                 intent.putExtra("bucketId", bucketId)
-                intent.putExtra("eventId", bucketEvents[position].eventId)
+                intent.putExtra("eventId", displayedEvents[position].eventId)
                 setResult(RESULT_OK, intent)
                 startActivity(intent)
             }
@@ -124,7 +111,7 @@ class EventOverviewActivity : AppCompatActivity() {
     }
 
     fun bindDate(currentDate: Date) {
-        val myFormat = "MM/dd/yyyy" // mention the format you need
+        val myFormat = "MM/dd/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.date.text = sdf.format(currentDate)
     }
@@ -132,6 +119,7 @@ class EventOverviewActivity : AppCompatActivity() {
     fun getDisplayedEvents(currentDate: Date, myEvents: MutableList<Event>) : MutableList<Event> {
         val displayedEvents : MutableList<Event> = mutableListOf()
         for (i in myEvents) {
+            Log.d("ITM","Compare: ${i.date} with $currentDate")
             if (i.date == currentDate){
                 displayedEvents.add(i)
             }
@@ -155,7 +143,7 @@ class EventOverviewActivity : AppCompatActivity() {
 
     fun dayPrice(){
         var sumCosts = 0
-        for (event in bucketEvents){
+        for (event in displayedEvents){
             var costs = event.costs
             sumCosts = sumCosts + costs
         }
@@ -163,7 +151,7 @@ class EventOverviewActivity : AppCompatActivity() {
     }
     fun dayDuration(){
         var sumDuration = 0
-        for (event in bucketEvents){
+        for (event in displayedEvents){
             var duration = event.duration
             sumDuration = sumDuration + duration
         }

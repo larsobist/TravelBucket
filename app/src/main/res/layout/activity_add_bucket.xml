@@ -50,7 +50,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+<!--    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
         android:layout_marginTop="8dp"
         android:text="Choose image"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />-->
 
     <View
         android:id="@+id/myRectangleView"

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import com.example.travelbucket.databinding.ActivityEventDetailsBinding
 import com.example.travelbucket.databinding.ActivityMainBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EventDetailsActivity : AppCompatActivity() {
     val binding by lazy { ActivityEventDetailsBinding.inflate(layoutInflater) }
@@ -48,7 +50,9 @@ class EventDetailsActivity : AppCompatActivity() {
     fun setContent(eventId: Int){
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
         binding.textViewTitle.text = event.title
-        binding.textViewDate.text = event.date.toString()
+        val myFormat = "MM/dd/yyyy"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding.textViewDate.text = sdf.format(event.date)
         binding.textViewDuration.text = event.duration.toString()+"h"
         binding.textViewLocation.text = event.location
         binding.textViewCosts.text = event.costs.toString()+" ₩"
