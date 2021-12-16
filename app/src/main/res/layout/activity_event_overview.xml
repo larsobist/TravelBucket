@@ -64,7 +64,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerEvents"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="500dp"
                 android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -120,6 +120,24 @@
                 app:layout_constraintEnd_toStartOf="@+id/btnAddEvent"
                 app:srcCompat="@drawable/ic_baseline_edit_24"
                 tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/sumPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13dp"
+                android:text="price"
+                app:layout_constraintBottom_toTopOf="@+id/btnEdit"
+                app:layout_constraintStart_toStartOf="@+id/btnEdit" />
+
+            <TextView
+                android:id="@+id/sumDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="13dp"
+                android:text="duration"
+                app:layout_constraintBottom_toTopOf="@+id/btnAddEvent"
+                app:layout_constraintStart_toStartOf="@+id/btnAddEvent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

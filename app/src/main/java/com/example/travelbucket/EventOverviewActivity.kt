@@ -35,6 +35,9 @@ class EventOverviewActivity : AppCompatActivity() {
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
 
+        binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
+        binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
+
         binding.btnAddEvent.setOnClickListener {
             val intent = Intent(this,AddEventActivity::class.java)
             startActivity(intent)
@@ -65,6 +68,9 @@ class EventOverviewActivity : AppCompatActivity() {
 
             displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
+
+            binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
+            binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
         }
 
         binding.btnForward.setOnClickListener {
@@ -73,6 +79,9 @@ class EventOverviewActivity : AppCompatActivity() {
 
             displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
+
+            binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
+            binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
         }
     }
 
@@ -91,8 +100,6 @@ class EventOverviewActivity : AppCompatActivity() {
             }
         })
 
-        dayPrice()
-        dayDuration()
     }
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
@@ -140,22 +147,26 @@ class EventOverviewActivity : AppCompatActivity() {
         return c.time
     }
 
-    fun dayPrice(){
+    fun dayPrice() : Int{
         var sumCosts = 0
         for (event in displayedEvents){
             var costs = event.costs
             sumCosts = sumCosts + costs
         }
         Log.d("ITM", "SumCosts: $sumCosts")
+        return sumCosts
     }
-    fun dayDuration(){
+
+    fun dayDuration() : Int {
         var sumDuration = 0
         for (event in displayedEvents){
             var duration = event.duration
             sumDuration = sumDuration + duration
         }
         Log.d("ITM", "SumDuration: $sumDuration")
+        return sumDuration
     }
+
 
     override fun onBackPressed() {
         //super.onBackPressed()
