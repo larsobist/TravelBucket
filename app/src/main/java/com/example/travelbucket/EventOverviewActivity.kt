@@ -1,6 +1,7 @@
 package com.example.travelbucket
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,8 @@ class EventOverviewActivity : AppCompatActivity() {
         val bucketId = bundle!!.getInt("bucketId")
         publicBucketId = bucketId
         val bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
+        val bucketColor = bucketsDB.BucketsDAO().getBucketColor(bucketId)
+        binding.constraintLayout.setBackgroundColor(Color.parseColor(bucketColor))
         supportActionBar?.setTitle(bucketTitle)
 
         init(bucketId)

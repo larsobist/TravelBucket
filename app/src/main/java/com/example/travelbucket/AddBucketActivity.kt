@@ -3,6 +3,7 @@ package com.example.travelbucket
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.widget.doOnTextChanged
 import com.example.travelbucket.databinding.ActivityAddBucketBinding
 import com.google.android.material.textfield.TextInputEditText
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+var colorCount = 0
 class AddBucketActivity : AppCompatActivity() {
     val binding by lazy { ActivityAddBucketBinding.inflate(layoutInflater) }
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
@@ -21,6 +23,7 @@ class AddBucketActivity : AppCompatActivity() {
 
         var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTitle)
         var editDescription = findViewById<TextInputEditText>(R.id.textInputEditDescription)
+        var color: String
 
         binding.textInputEditTitle.doOnTextChanged { text, start, before, count ->
             if (text!!.isEmpty()) {
@@ -52,9 +55,21 @@ class AddBucketActivity : AppCompatActivity() {
                 var title = (editTitle.text).toString()
                 var description = (editDescription.text).toString()
 
+                when (colorCount){
+                    0 -> color = "#D3CBF5"
+                    1 -> color = "#BCEBAE"
+                    2 -> color = "#FFF6AB"
+                    else -> color = "#FFBE9F"
+                }
+
+                if (colorCount == 3){
+                    colorCount = 0
+                } else{
+                    colorCount ++
+                }
 
                // val item = Bucket(0, title, 1)
-                val item = Bucket(0, title, description)
+                val item = Bucket(0, title, description, color)
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertBucket(item)
                 }

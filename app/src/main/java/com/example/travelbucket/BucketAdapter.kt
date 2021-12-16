@@ -2,6 +2,7 @@ package com.example.travelbucket
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -61,6 +62,8 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
             }
 
             binding.textBucketDescription.text = bucket.description
+
+            binding.cardView.setCardBackgroundColor(Color.parseColor(bucket.color))
 
         /*
             binding.cardView.setOnLongClickListener {
