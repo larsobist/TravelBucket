@@ -33,6 +33,13 @@ class EditBucketActivity : AppCompatActivity() {
                 binding.textInputLayout.error = null
             }
         }
+        binding.textInputEditDescription.doOnTextChanged { text, start, before, count ->
+            if (text!!.isEmpty()) {
+                binding.textInputLayoutDescription.error = "Description required!"
+            } else {
+                binding.textInputLayoutDescription.error = null
+            }
+        }
 
         binding.btnCancel.setOnClickListener {
             val intent = Intent(this,EventOverviewActivity::class.java)
@@ -42,6 +49,8 @@ class EditBucketActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             if (binding.textInputEditTitle.text!!.isEmpty()) {
                 binding.textInputLayout.error = "Title required!"
+            } else if (binding.textInputEditDescription.text!!.isEmpty()) {
+                binding.textInputLayoutDescription.error = "Description required!"
             } else {
                 var title = (editTitle.text).toString()
                 var description = (editDescription.text).toString()

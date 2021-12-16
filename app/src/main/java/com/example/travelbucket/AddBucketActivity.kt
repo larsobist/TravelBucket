@@ -30,14 +30,13 @@ class AddBucketActivity : AppCompatActivity() {
             }
         }
 
-        /*binding.btnChooseImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK).apply {
-                type = "image/*"
+        binding.textInputEditDescription.doOnTextChanged { text, start, before, count ->
+            if (text!!.isEmpty()) {
+                binding.textInputLayoutDescription.error = "Description required!"
+            } else {
+                binding.textInputLayoutDescription.error = null
             }
-            startActivityForResult(intent,100)
-        }*/
-
-         */
+        }
 
         binding.btnCancel.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
@@ -47,6 +46,8 @@ class AddBucketActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             if (binding.textInputEditTitle.text!!.isEmpty()) {
                 binding.textInputLayout.error = "Title required!"
+            } else if (binding.textInputEditDescription.text!!.isEmpty()) {
+                binding.textInputLayoutDescription.error = "Description required!"
             } else {
                 var title = (editTitle.text).toString()
                 var description = (editDescription.text).toString()
@@ -63,13 +64,6 @@ class AddBucketActivity : AppCompatActivity() {
             }
         }
     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            binding.imgBucket.setImageURI(data?.data)
-        }
-    }*/
 
     override fun onBackPressed() {
         //super.onBackPressed()
