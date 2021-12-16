@@ -11,10 +11,21 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelbucket.databinding.EventViewBinding
 
+lateinit var bListener : EventAdapter.onItemClickListener
+
 class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+
+    interface onItemClickListener{
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemListener(listener: onItemClickListener) {
+        bListener = listener
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = EventViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+
+        return ViewHolder(binding, bListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -30,11 +41,10 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
         myEvents = updatedList
         this!!.notifyDataSetChanged()
     }
-
-    inner class ViewHolder(val binding: EventViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding:EventViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event, position: Int) {
             binding.textTitle.text = event.title
-            binding.textDuration.text = "Duration: " + event.duration
+            binding.textDuration.text = "Duration: " + event.duration + "h"
             binding.textNotes.text = "Notes: " + event.notes
 
             // modify line constraints
@@ -59,9 +69,14 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
 
         }
         init {
+            /*
             binding.root.setOnClickListener {
                 val intent = Intent(mContext,EventDetailsActivity::class.java)
                 mContext.startActivity(intent)
+            }
+             */
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
             }
         }
     }

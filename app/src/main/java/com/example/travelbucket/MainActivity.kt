@@ -3,6 +3,7 @@ package com.example.travelbucket
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -27,9 +28,8 @@ class MainActivity : AppCompatActivity() {
         myBuckets.add(Bucket(2,"Berlin", R.drawable.berlin))
         myBuckets.add(Bucket(3,"Rome", R.drawable.rome))
         myBuckets.add(Bucket(4,"Tokyo", R.drawable.tokyo))
-
  */
-        myBuckets.add(Bucket(4,"Example", false))
+        //myBuckets.add(Bucket(4,"Example", false))
 
         bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) }
         binding.recyclerBuckets.adapter = bucketAdapter
@@ -39,16 +39,20 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this,AddBucketActivity::class.java)
             startActivity(intent)
         }
-
     }
 
     fun init() {
-        //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
-            myBuckets = bucketsDB.BucketsDAO().getAll() as MutableList<Bucket>
-            bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) } //tell the numbersAdapter
-            binding.recyclerBuckets.adapter = bucketAdapter //display the data
-        //}
-        //binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
+        myBuckets = bucketsDB.BucketsDAO().getAllBuckets() as MutableList<Bucket>
+        val bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) } //tell the numbersAdapter
+        binding.recyclerBuckets.adapter = bucketAdapter //display the data
+        bucketAdapter.setOnItemListener(object : BucketAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@MainActivity, EventOverviewActivity::class.java)
+                intent.putExtra("bucketId", myBuckets[position].bucketId)
+                setResult(RESULT_OK, intent)
+                startActivity(intent)
+            }
+        })
     }
 
     fun showDeleteMenu(show: Boolean) {
@@ -94,5 +98,8 @@ class MainActivity : AppCompatActivity() {
         }
         builder.show()
 
+    }
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 }

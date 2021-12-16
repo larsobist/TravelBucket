@@ -6,43 +6,59 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelbucket.databinding.ActivityEventOverviewBinding
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EventOverviewActivity : AppCompatActivity() {
     val binding by lazy { ActivityEventOverviewBinding.inflate(layoutInflater) }
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
-    var placeEvents = mutableListOf<Event>()
+    var bucketEvents = mutableListOf<Event>()
+    var displayedEvents = mutableListOf<Event>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        init()
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+        val bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
+        supportActionBar?.setTitle(bucketTitle)
 
-        val myEvents = mutableListOf<Event>()
-        val event1 = Event(0,"Gyeongbokgung Palace", "3000 Won", Date(2022, 1, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","3h")
-        val event2 = Event(0,"War Memorial of Korea", "0 Won", Date(2022, 1, 17), "Seoul", "only go if the weather is bad", "www.google.de","2h")
-        val event3 = Event(0,"Changdeokgung Palace", "4000 Won", Date(2022, 2, 16), "Jung-Gu", "Rent a hanbok", "www.google.de","5h")
-        val event4 = Event(0,"National Museum of Korea", "0 Won", Date(2022, 1, 16), "Seoul", "only go if the weather is bad", "www.google.de","1h")
-        myEvents.add(event1)
-        myEvents.add(event2)
-        myEvents.add(event3)
-        myEvents.add(event4)
-        myEvents.add(event1)
-        myEvents.add(event2)
-        myEvents.add(event3)
-        myEvents.add(event4)
+        init(bucketId)
 
-        var currentDate = getFirstDate(myEvents)
+        var currentDate = getFirstDate(bucketEvents)
         bindDate(currentDate)
 
-        var displayedEvents = getDisplayedEvents(currentDate, myEvents)
+        displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
+        //val eventAdapter = EventAdapter(this, displayedEvents)
         val eventAdapter = EventAdapter(this, displayedEvents)
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
 
+        binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
+        binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
+
         binding.btnAddEvent.setOnClickListener {
             val intent = Intent(this,AddEventActivity::class.java)
+            startActivity(intent)
+            intent.putExtra("bucketId", bucketId)
+            intent.putExtra("bucketTitle", bucketTitle)
+            intent.putExtra("date", currentDate.getTime())
+            setResult(RESULT_OK, intent)
+            startActivity(intent)
+        }
+
+        binding.btnDelete.setOnClickListener{
+            val intent = Intent(this,MainActivity::class.java)
+            bucketsDB.BucketsDAO().deleteBucket(bucketId)
+            bucketsDB.BucketsDAO().deleteEventsFromDeletedBucket(bucketId)
+            startActivity(intent)
+        }
+
+        binding.btnEdit.setOnClickListener{
+            val intent = Intent(this,EditBucketActivity::class.java)
+            intent.putExtra("bucketId", bucketId)
+            setResult(RESULT_OK, intent)
             startActivity(intent)
         }
 
@@ -50,50 +66,61 @@ class EventOverviewActivity : AppCompatActivity() {
             currentDate = prevDate(currentDate)
             bindDate(currentDate)
 
-            displayedEvents = getDisplayedEvents(currentDate, myEvents)
+            displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
+
+            binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
+            binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
         }
 
         binding.btnForward.setOnClickListener {
             currentDate = nextDate(currentDate)
             bindDate(currentDate)
 
-            displayedEvents = getDisplayedEvents(currentDate, myEvents)
+            displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
+
+            binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
+            binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
         }
-
-
     }
 
-    fun init() {
+    fun init(bucketId: Int) {
         //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
-        placeEvents = bucketsDB.EventsDAO().getAll() as MutableList<Event>
-        Log.d("ITM", "Title: $placeEvents")
-        //val eventAdapter = EventAdapter(this, placeEvents) //tell the numbersAdapter
-        //binding.recyclerEvents.adapter = eventAdapter //display the data
-        //}
-        //binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
+        bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
+        val eventsAdapter = EventAdapter(this, displayedEvents)
+        binding.recyclerEvents.adapter = eventsAdapter //display the data
+        eventsAdapter.setOnItemListener(object : EventAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@EventOverviewActivity, EventDetailsActivity::class.java)
+                intent.putExtra("bucketId", bucketId)
+                intent.putExtra("eventId", displayedEvents[position].eventId)
+                setResult(RESULT_OK, intent)
+                startActivity(intent)
+            }
+        })
+
     }
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
-        var firstEvent = myEvents[0]
-        for (i in myEvents) {
-            if (i.date.year <= firstEvent.date.year) {
-                if (i.date.month <= firstEvent.date.month) {
-                    if (i.date.date <= firstEvent.date.date) {
-                        firstEvent = i
-                    }
+        if (myEvents.isEmpty()){
+            var cal = Calendar.getInstance()
+            return cal.getTime()
+        }else{
+            var firstEvent = myEvents[0]
+            for (i in 0 until myEvents.size) {
+                if (myEvents[i].date.before(firstEvent.date)) {
+                    firstEvent = myEvents[i]
                 }
             }
+            return firstEvent.date
         }
-        return firstEvent.date
     }
 
     fun bindDate(currentDate: Date) {
-        var yearStr = "${currentDate.year}"
-        var monthStr = if (currentDate.month  < 10) "0${currentDate.month}" else "${currentDate.month}"
-        var dayStr = if (currentDate.day  < 10) "0${currentDate.day}" else "${currentDate.day}"
-        binding.date.text = "$monthStr / $dayStr / $yearStr"
+        val myFormat = "MM/dd/yyyy"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        binding.date.text = sdf.format(currentDate)
     }
 
     fun getDisplayedEvents(currentDate: Date, myEvents: MutableList<Event>) : MutableList<Event> {
@@ -118,5 +145,32 @@ class EventOverviewActivity : AppCompatActivity() {
         c.time = currentDate
         c.add(Calendar.DATE, 1)
         return c.time
+    }
+
+    fun dayPrice() : Int{
+        var sumCosts = 0
+        for (event in displayedEvents){
+            var costs = event.costs
+            sumCosts = sumCosts + costs
+        }
+        Log.d("ITM", "SumCosts: $sumCosts")
+        return sumCosts
+    }
+
+    fun dayDuration() : Int {
+        var sumDuration = 0
+        for (event in displayedEvents){
+            var duration = event.duration
+            sumDuration = sumDuration + duration
+        }
+        Log.d("ITM", "SumDuration: $sumDuration")
+        return sumDuration
+    }
+
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
     }
 }

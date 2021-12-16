@@ -19,9 +19,6 @@
             android:name=".EventDetailsActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="true" />
-        <activity
             android:name=".AddEventActivity"
             android:exported="true" />
         <activity

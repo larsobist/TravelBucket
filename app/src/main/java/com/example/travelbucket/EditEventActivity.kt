@@ -9,9 +9,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import com.example.travelbucket.databinding.ActivityEditEventBinding
-import com.example.travelbucket.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import java.util.*
 
 class EditEventActivity : AppCompatActivity() {
     val binding by lazy { ActivityEditEventBinding.inflate(layoutInflater) }
+    val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
 
     var btnDate: Button? = null
     var textDate: TextView? = null
@@ -30,11 +32,29 @@ class EditEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+        val eventId = bundle!!.getInt("eventId")
+
+        //Set title in top bar
+        setTitleInBar(bucketId)
+        //Set content in view
+        setContent(eventId)
+
         // get the references from layout file
         textDate = binding.textDate
         btnDate = binding.btnDate
 
-        textDate!!.text = "--/--/----"
+        var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTextTitle)
+        var layoutTitle = findViewById<TextInputLayout>(R.id.textInputLayoutTitle)
+        var editCosts = findViewById<TextInputEditText>(R.id.textInputEditTextCosts)
+        var layoutCosts = findViewById<TextInputLayout>(R.id.textInputLayoutCosts)
+        var editNotes = findViewById<TextInputEditText>(R.id.textInputEditTextNotes)
+        var editLinks = findViewById<TextInputEditText>(R.id.textInputEditTextLinks)
+        var editDuration = findViewById<TextInputEditText>(R.id.textInputEditTextDuration)
+        var layoutDuration = findViewById<TextInputLayout>(R.id.textInputLayoutDuration)
+
+        //textDate!!.text = "--/--/----"
 
         // create an OnDateSetListener
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
@@ -65,26 +85,96 @@ class EditEventActivity : AppCompatActivity() {
 
         })
 
+        editTitle.addTextChangedListener {
+            if (editTitle.text!!.isEmpty()) {
+                layoutTitle.error = "Title required!"
+            } else{
+                layoutTitle.error = null
+            }
+        }
 
+        editCosts.addTextChangedListener {
+            if (editCosts.text!!.isEmpty()) {
+                layoutCosts.error = "Costs required!"
+            } else{
+                layoutCosts.error = null
+            }
+        }
+
+        editDuration.addTextChangedListener {
+            if (editDuration.text!!.isEmpty()) {
+                layoutDuration.error = "Duration required!"
+            } else{
+                layoutDuration.error = null
+            }
+        }
 
         binding.btnCancelEdit.setOnClickListener {
-            val intent = Intent(this,EventOverviewActivity::class.java)
+            val intent = Intent(this,EventDetailsActivity::class.java)
+            intent.putExtra("bucketId", bucketId)
+            intent.putExtra("eventId", eventId)
+            setResult(RESULT_OK, intent)
             startActivity(intent)
         }
 
         binding.btnSaveEdit.setOnClickListener {
-            // TODO implement validation of inputfields
-            if (binding.textInputEditTextTitle.text!!.isEmpty()) {
-                binding.textInputLayoutTitle.error = "Title required!"
+            if (editTitle.text!!.isEmpty()) {
+                layoutTitle.error = "Title required!"
+            } else if (editCosts.text!!.isEmpty()) {
+                layoutCosts.error = "Costs required!"
+            } else if (editDuration.text!!.isEmpty()) {
+                layoutDuration.error = "Duration required!"
             } else {
+                var title = (editTitle.text).toString()
+                var costs = (editCosts.text).toString()
+                var notes = (editNotes.text).toString()
+                var links = (editLinks.text).toString()
+                var duration = (editDuration.text).toString()
+
+                GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
+                    //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), date, notes, links, duration.toInt())
+                    bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), notes, links, duration.toInt())
+                }
+
                 val intent = Intent(this,EventDetailsActivity::class.java)
+                intent.putExtra("bucketId", bucketId)
+                intent.putExtra("eventId", eventId)
+                setResult(RESULT_OK, intent)
                 startActivity(intent)
             }
         }
     }
     private fun updateDateInView() {
-        val myFormat = "MM/dd/yyyy" // mention the format you need
+        val myFormat = "MM/dd/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
-        textDate!!.text = sdf.format(cal.getTime())
+        binding.textDate!!.text = sdf.format(date)
+    }
+
+    fun setTitleInBar(bucketId :Int){
+        var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
+        supportActionBar?.setTitle("$bucketTitle: Edit Event")
+    }
+    fun setContent(eventId: Int){
+        var event = bucketsDB.BucketsDAO().getEvent(eventId)
+        date = event.date
+        updateDateInView()
+        binding.textInputEditTextTitle.setText(event.title)
+        binding.textInputEditTextDuration.setText(event.duration.toString())
+        binding.textInputEditTextCosts.setText(event.costs.toString())
+        binding.textInputEditTextNotes.setText(event.notes)
+        binding.textInputEditTextLinks.setText(event.links)
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val bundle : Bundle?= intent.extras
+        val bucketId = bundle!!.getInt("bucketId")
+        val eventId = bundle!!.getInt("eventId")
+
+        val intent = Intent(this,EventDetailsActivity::class.java)
+        intent.putExtra("bucketId", bucketId)
+        intent.putExtra("eventId", eventId)
+        setResult(RESULT_OK, intent)
+        startActivity(intent)
     }
 }

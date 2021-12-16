@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-//@Database(entities = [Bucket::class], version = 1)
 @Database(
     entities = [
         Bucket::class,
@@ -16,7 +15,6 @@ import androidx.room.RoomDatabase
 
 abstract class BucketsDB : RoomDatabase(){
     abstract fun BucketsDAO(): BucketsDAO
-    abstract fun EventsDAO(): EventsDAO
 
     companion object {
         // Singleton prevents multiple instances of database opening at the same time.
