@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     var myBuckets = mutableListOf<Bucket>()
     private lateinit var bucketAdapter: BucketAdapter
     private var mainMenu: Menu? = null
+    var reversedBuckets = myBuckets.reversed().toMutableList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) }
+        bucketAdapter = BucketAdapter(this, reversedBuckets){ show -> showDeleteMenu(show) }
         binding.recyclerBuckets.adapter = bucketAdapter
         binding.recyclerBuckets.layoutManager = LinearLayoutManager(this)
 
@@ -36,12 +37,13 @@ class MainActivity : AppCompatActivity() {
 
     fun init() {
         myBuckets = bucketsDB.BucketsDAO().getAllBuckets() as MutableList<Bucket>
-        val bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) } //tell the numbersAdapter
+        reversedBuckets= myBuckets.reversed().toMutableList()
+        val bucketAdapter = BucketAdapter(this, reversedBuckets){ show -> showDeleteMenu(show) } //tell the numbersAdapter
         binding.recyclerBuckets.adapter = bucketAdapter //display the data
         bucketAdapter.setOnItemListener(object : BucketAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@MainActivity, EventOverviewActivity::class.java)
-                intent.putExtra("bucketId", myBuckets[position].bucketId)
+                intent.putExtra("bucketId", reversedBuckets[position].bucketId)
                 setResult(RESULT_OK, intent)
                 startActivity(intent)
             }

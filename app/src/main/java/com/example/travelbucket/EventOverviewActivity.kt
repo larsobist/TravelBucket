@@ -42,7 +42,6 @@ class EventOverviewActivity : AppCompatActivity() {
         bindDate(currentDate)
 
         displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
-        //val eventAdapter = EventAdapter(this, displayedEvents)
         val eventAdapter = EventAdapter(this, displayedEvents)
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
