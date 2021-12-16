@@ -35,7 +35,7 @@ class EditBucketActivity : AppCompatActivity() {
         }
 
         binding.btnCancel.setOnClickListener {
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,EventOverviewActivity::class.java)
             startActivity(intent)
         }
 

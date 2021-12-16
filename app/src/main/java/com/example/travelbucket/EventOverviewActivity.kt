@@ -4,6 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelbucket.databinding.ActivityEventOverviewBinding
 import java.text.SimpleDateFormat
@@ -14,6 +18,8 @@ class EventOverviewActivity : AppCompatActivity() {
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(this) } //binding of DB
     var bucketEvents = mutableListOf<Event>()
     var displayedEvents = mutableListOf<Event>()
+    private var mainMenu: Menu? = null
+    var publicBucketId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,10 +27,13 @@ class EventOverviewActivity : AppCompatActivity() {
 
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
+        publicBucketId = bucketId
         val bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
         supportActionBar?.setTitle(bucketTitle)
 
         init(bucketId)
+
+        showDeleteMenu(true)
 
         var currentDate = getFirstDate(bucketEvents)
         bindDate(currentDate)
@@ -44,20 +53,6 @@ class EventOverviewActivity : AppCompatActivity() {
             intent.putExtra("bucketId", bucketId)
             intent.putExtra("bucketTitle", bucketTitle)
             intent.putExtra("date", currentDate.getTime())
-            setResult(RESULT_OK, intent)
-            startActivity(intent)
-        }
-
-        binding.btnDelete.setOnClickListener{
-            val intent = Intent(this,MainActivity::class.java)
-            bucketsDB.BucketsDAO().deleteBucket(bucketId)
-            bucketsDB.BucketsDAO().deleteEventsFromDeletedBucket(bucketId)
-            startActivity(intent)
-        }
-
-        binding.btnEdit.setOnClickListener{
-            val intent = Intent(this,EditBucketActivity::class.java)
-            intent.putExtra("bucketId", bucketId)
             setResult(RESULT_OK, intent)
             startActivity(intent)
         }
@@ -172,5 +167,48 @@ class EventOverviewActivity : AppCompatActivity() {
         //super.onBackPressed()
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
+    }
+
+    fun showDeleteMenu(show: Boolean) {
+        mainMenu?.findItem(R.id.btnDeleteBucket)?.isVisible = show
+        mainMenu?.findItem(R.id.btnEditBucket)?.isVisible = show
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        mainMenu = menu
+        menuInflater.inflate(R.menu.bucket_menu, mainMenu)
+        showDeleteMenu(true)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.btnDeleteBucket -> { delete() }
+            R.id.btnEditBucket -> {
+                val intent = Intent(this,EditBucketActivity::class.java)
+                intent.putExtra("bucketId", publicBucketId)
+                setResult(RESULT_OK, intent)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun delete() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Delete")
+        builder.setMessage("Do you want to delete this bucket?")
+        builder.setPositiveButton("Delete") { dialog, which ->
+            Toast.makeText(applicationContext, "Bucket was deleted", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this,MainActivity::class.java)
+            bucketsDB.BucketsDAO().deleteBucket(publicBucketId)
+            bucketsDB.BucketsDAO().deleteEventsFromDeletedBucket(publicBucketId)
+            startActivity(intent)
+
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
+
+        }
+        builder.show()
     }
 }

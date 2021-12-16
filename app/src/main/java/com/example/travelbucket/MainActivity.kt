@@ -23,13 +23,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         init()
-/*
-        myBuckets.add(Bucket(1,"Seoul", R.drawable.seoul))
-        myBuckets.add(Bucket(2,"Berlin", R.drawable.berlin))
-        myBuckets.add(Bucket(3,"Rome", R.drawable.rome))
-        myBuckets.add(Bucket(4,"Tokyo", R.drawable.tokyo))
- */
-        //myBuckets.add(Bucket(4,"Example", false))
 
         bucketAdapter = BucketAdapter(this, myBuckets){ show -> showDeleteMenu(show) }
         binding.recyclerBuckets.adapter = bucketAdapter
