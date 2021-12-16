@@ -38,6 +38,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
+    <View
+        android:id="@+id/line5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/line"
+        app:layout_constraintBottom_toTopOf="@+id/btnDeleteEvent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageButton
         android:id="@+id/btnEditEvent"
         android:layout_width="56dp"
@@ -67,10 +77,13 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEditEvent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line">
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +134,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Costs" />
+                android:text="Cost" />
 
             <TextView
                 android:id="@+id/textViewCosts"
@@ -159,14 +172,17 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Website" />
 
-            <TextView
-                android:id="@+id/textViewLinks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+            <Button
+                android:id="@+id/btnLinks"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
                 android:text="https://www.trazy.com/experience/detail/lotte…"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
                 android:textColor="#566DEF" />
         </LinearLayout>
     </ScrollView>

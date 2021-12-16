@@ -1,5 +1,6 @@
 package com.example.travelbucket
 
+import android.app.SearchManager
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -71,10 +72,17 @@ class EventDetailsActivity : AppCompatActivity() {
             }
         }
 
-        binding.textViewLinks.setOnClickListener{
-            var url = event.links
+        binding.btnLinks.setOnClickListener{
+            /*var url = event.links
             val webpage: Uri = Uri.parse(url)
             val intent = Intent(Intent.ACTION_VIEW, webpage)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }*/
+            var url = event.links
+            val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
+                putExtra(SearchManager.QUERY, url )
+            }
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
             }
@@ -93,7 +101,7 @@ class EventDetailsActivity : AppCompatActivity() {
         binding.textViewDuration.text = event.duration.toString()+"h"
         binding.textViewCosts.text = event.costs.toString()+" ₩"
         binding.textViewNotes.text = event.notes
-        binding.textViewLinks.text = event.links
+        binding.btnLinks.text = event.links
     }
 
     override fun onBackPressed() {
