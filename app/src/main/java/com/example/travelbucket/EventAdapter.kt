@@ -45,7 +45,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
         fun bind(event: Event, position: Int) {
             binding.textTitle.text = event.title
             binding.textDuration.text = "Duration: " + event.duration + "h"
-            binding.textNotes.text = "Notes: " + event.notes
+            binding.textCosts.text = "Cost: " + event.costs
 
             // modify line constraints
             val constraintSet = ConstraintSet()
@@ -59,10 +59,10 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
             // make line end at right position and add margin of last item
             if (position == myEvents.size-1) {
                 constraintSet.connect(binding.line.id, ConstraintSet.BOTTOM, binding.circle.id, ConstraintSet.BOTTOM)
-                constraintSet.connect(binding.textNotes.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 32.toDp(mContext))
+                constraintSet.connect(binding.textCosts.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 32.toDp(mContext))
             }else {
                 constraintSet.connect(binding.line.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM)
-                constraintSet.connect(binding.textNotes.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 0.toDp(mContext))
+                constraintSet.connect(binding.textCosts.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 0.toDp(mContext))
             }
             // apply constraints to layout
             constraintSet.applyTo(binding.constraintLayout)

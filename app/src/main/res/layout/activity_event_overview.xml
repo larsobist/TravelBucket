@@ -111,18 +111,18 @@
                 android:id="@+id/sumPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
                 android:text="price"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/btnAddEvent" />
+                app:layout_constraintBottom_toBottomOf="@+id/btnAddEvent"
+                app:layout_constraintStart_toStartOf="@+id/sumDuration" />
 
             <TextView
                 android:id="@+id/sumDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:text="duration"
-                app:layout_constraintBottom_toBottomOf="@+id/btnAddEvent"
-                app:layout_constraintStart_toStartOf="@+id/sumPrice" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnAddEvent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

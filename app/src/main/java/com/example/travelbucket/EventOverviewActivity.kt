@@ -44,8 +44,8 @@ class EventOverviewActivity : AppCompatActivity() {
         binding.recyclerEvents.adapter = eventAdapter
         binding.recyclerEvents.layoutManager = LinearLayoutManager(this)
 
-        binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
-        binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
+        binding.sumPrice.text = "Daily cost: " + dayPrice().toString() +" ₩"
+        binding.sumDuration.text =  "Daily duration: " + dayDuration().toString() +"h"
 
         binding.btnAddEvent.setOnClickListener {
             val intent = Intent(this,AddEventActivity::class.java)
@@ -64,8 +64,8 @@ class EventOverviewActivity : AppCompatActivity() {
             displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
 
-            binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
-            binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
+            binding.sumPrice.text = "Daily cost: " + dayPrice().toString() +" ₩"
+            binding.sumDuration.text =  "Daily duration: " + dayDuration().toString() +"h"
         }
 
         binding.btnForward.setOnClickListener {
@@ -75,8 +75,8 @@ class EventOverviewActivity : AppCompatActivity() {
             displayedEvents = getDisplayedEvents(currentDate, bucketEvents)
             eventAdapter.update(displayedEvents)
 
-            binding.sumPrice.text = "Price: " + dayPrice().toString() +" ₩"
-            binding.sumDuration.text =  "Time: " + dayDuration().toString() +"h"
+            binding.sumPrice.text = "Daily cost: " + dayPrice().toString() +" ₩"
+            binding.sumDuration.text =  "Daily duration: " + dayDuration().toString() +"h"
         }
     }
 

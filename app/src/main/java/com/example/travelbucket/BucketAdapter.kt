@@ -55,9 +55,9 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
             var bucketId = bucket.bucketId
             if(bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event> != emptyList<Event>()){
                 var price = getSum(bucketId)
-                binding.textBucketPrice.text = "Total Cost: " + price + " ₩"
+                binding.textBucketPrice.text = "Total cost: " + price + " ₩"
             }else{
-                binding.textBucketPrice.text = "Total Cost: 0 ₩"
+                binding.textBucketPrice.text = "Total cost: 0 ₩"
             }
 
             binding.textBucketDescription.text = bucket.description
