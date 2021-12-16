@@ -55,6 +55,17 @@ class EventDetailsActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        binding.textViewLinks.setOnClickListener{
+
+            var url = event.links
+            val webpage: Uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }
+
     }
 
     fun setTitleInBar(bucketId :Int){
