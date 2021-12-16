@@ -67,7 +67,7 @@ class EditEventActivity : AppCompatActivity() {
             }
         }
 
-        // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
+        // show DatePickerDialog when clicking on change date button
         btnDate!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View) {
                 DatePickerDialog(
@@ -82,6 +82,7 @@ class EditEventActivity : AppCompatActivity() {
 
         })
 
+        // display error if required field is empty
         editTitle.addTextChangedListener {
             if (editTitle.text!!.isEmpty()) {
                 layoutTitle.error = "Title required!"
@@ -89,7 +90,6 @@ class EditEventActivity : AppCompatActivity() {
                 layoutTitle.error = null
             }
         }
-
         editCosts.addTextChangedListener {
             if (editCosts.text!!.isEmpty()) {
                 layoutCosts.error = "Costs required!"
@@ -97,7 +97,6 @@ class EditEventActivity : AppCompatActivity() {
                 layoutCosts.error = null
             }
         }
-
         editDuration.addTextChangedListener {
             if (editDuration.text!!.isEmpty()) {
                 layoutDuration.error = "Duration required!"
@@ -106,6 +105,7 @@ class EditEventActivity : AppCompatActivity() {
             }
         }
 
+        // go back to event details activity if cancel button is clicked
         binding.btnCancelEdit.setOnClickListener {
             val intent = Intent(this,EventDetailsActivity::class.java)
             intent.putExtra("bucketId", bucketId)
@@ -114,7 +114,9 @@ class EditEventActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // save event to DB
         binding.btnSaveEdit.setOnClickListener {
+            // don not save while required fields are empty
             if (editTitle.text!!.isEmpty()) {
                 layoutTitle.error = "Title required!"
             } else if (editCosts.text!!.isEmpty()) {
@@ -128,11 +130,12 @@ class EditEventActivity : AppCompatActivity() {
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
+                // insert item into DB
+
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), date, notes, links, duration.toInt())
                     bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), notes, links, duration.toInt())
                 }
-
                 val intent = Intent(this,EventDetailsActivity::class.java)
                 intent.putExtra("bucketId", bucketId)
                 intent.putExtra("eventId", eventId)
@@ -142,18 +145,22 @@ class EditEventActivity : AppCompatActivity() {
         }
     }
     private fun updateDateInView() {
+        // display date in correct format
         val myFormat = "MM/dd/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.textDate!!.text = sdf.format(date)
     }
 
     fun setTitleInBar(bucketId :Int){
+        // change title in app bar
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
         supportActionBar?.setTitle("$bucketTitle: Edit Event")
     }
     fun setContent(eventId: Int){
+        // get content from DB
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
         date = event.date
+        // display content in input fields
         updateDateInView()
         binding.textInputEditTextTitle.setText(event.title)
         binding.textInputEditTextDuration.setText(event.duration.toString())
@@ -168,6 +175,7 @@ class EditEventActivity : AppCompatActivity() {
         val bucketId = bundle!!.getInt("bucketId")
         val eventId = bundle!!.getInt("eventId")
 
+        // on back press go back to event details activity
         val intent = Intent(this,EventDetailsActivity::class.java)
         intent.putExtra("bucketId", bucketId)
         intent.putExtra("eventId", eventId)

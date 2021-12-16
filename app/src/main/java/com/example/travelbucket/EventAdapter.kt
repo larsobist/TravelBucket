@@ -20,6 +20,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
     fun setOnItemListener(listener: onItemClickListener) {
         bListener = listener
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = EventViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
@@ -35,10 +36,12 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
         return myEvents.size
     }
 
+    // update recyclerview
     fun update(updatedList:MutableList<Event>){
         myEvents = updatedList
         this!!.notifyDataSetChanged()
     }
+
     inner class ViewHolder(val binding:EventViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event, position: Int) {
             binding.textTitle.text = event.title
@@ -74,6 +77,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
     }
 }
 
+// convert to dp
 fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics
 ).toInt()

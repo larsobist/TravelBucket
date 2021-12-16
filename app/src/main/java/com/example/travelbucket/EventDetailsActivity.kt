@@ -25,6 +25,7 @@ class EventDetailsActivity : AppCompatActivity() {
         /*val eventTitle = bucketsDB.BucketsDAO().getEventTitle(eventId)
         supportActionBar?.setTitle(eventTitle)*/
 
+        // get event and bucket
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
         var bucket = bucketsDB.BucketsDAO().getBucket(bucketId)
 
@@ -33,6 +34,7 @@ class EventDetailsActivity : AppCompatActivity() {
         //Set content in view
         setContent(event)
 
+        // if edit button is clicked go to edit event activity
         binding.btnEditEvent.setOnClickListener{
             val intent = Intent(this,EditEventActivity::class.java)
             intent.putExtra("bucketId", bucketId)
@@ -41,12 +43,16 @@ class EventDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // if delete button is clicked, delete the event
         binding.btnDeleteEvent.setOnClickListener{
+            // create alert dialog
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Delete")
             builder.setMessage("Do you want to delete this event?")
             builder.setPositiveButton("Delete") { dialog, which ->
+                // display toast
                 Toast.makeText(applicationContext, "Event was deleted", Toast.LENGTH_SHORT).show()
+                // delete event from DB
                 val intent = Intent(this,EventOverviewActivity::class.java)
                 intent.putExtra("bucketId", bucketId)
                 bucketsDB.BucketsDAO().deleteEvent(eventId)
@@ -55,11 +61,13 @@ class EventDetailsActivity : AppCompatActivity() {
 
             }
             builder.setNegativeButton("Cancel") { dialog, which ->
-
+                // close dialog
             }
+            // display dialog
             builder.show()
         }
 
+        // open event in map
         binding.btnShowLocation.setOnClickListener{
             var location = event.title
             var city = bucket.title
@@ -70,6 +78,7 @@ class EventDetailsActivity : AppCompatActivity() {
             }
         }
 
+        // open link in browser
         binding.btnLinks.setOnClickListener{
             /*var url = event.links
             val webpage: Uri = Uri.parse(url)
@@ -89,8 +98,11 @@ class EventDetailsActivity : AppCompatActivity() {
 
     fun setTitleInBar(bucketId :Int){
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
+        // set action bar title to bucket title
         supportActionBar?.setTitle(bucketTitle)
     }
+
+    // display content from DB
     fun setContent(event: Event){
         binding.textViewTitle.text = event.title
         val myFormat = "MM/dd/yyyy"
@@ -107,6 +119,7 @@ class EventDetailsActivity : AppCompatActivity() {
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
 
+        // on back press go back to event overview activity
         val intent = Intent(this,EventOverviewActivity::class.java)
         intent.putExtra("bucketId", bucketId)
         setResult(RESULT_OK, intent)

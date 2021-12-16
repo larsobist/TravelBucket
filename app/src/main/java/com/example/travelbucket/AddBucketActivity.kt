@@ -17,13 +17,13 @@ class AddBucketActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(binding.root)
 
         var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTitle)
         var editDescription = findViewById<TextInputEditText>(R.id.textInputEditDescription)
         var color: String
 
+        // show error if title field is empty
         binding.textInputEditTitle.doOnTextChanged { text, start, before, count ->
             if (text!!.isEmpty()) {
                 binding.textInputLayout.error = "Title required!"
@@ -32,6 +32,7 @@ class AddBucketActivity : AppCompatActivity() {
             }
         }
 
+        // show error if description field is empty
         binding.textInputEditDescription.doOnTextChanged { text, start, before, count ->
             if (text!!.isEmpty()) {
                 binding.textInputLayoutDescription.error = "Description required!"
@@ -40,20 +41,25 @@ class AddBucketActivity : AppCompatActivity() {
             }
         }
 
+        // return to main activity if cancel button is clicked
         binding.btnCancel.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
         }
 
+        // save bucket to DB
         binding.btnSave.setOnClickListener {
+            // don not save while required fields are empty
             if (binding.textInputEditTitle.text!!.isEmpty()) {
                 binding.textInputLayout.error = "Title required!"
             } else if (binding.textInputEditDescription.text!!.isEmpty()) {
                 binding.textInputLayoutDescription.error = "Description required!"
             } else {
+                // get tile and description from input fields
                 var title = (editTitle.text).toString()
                 var description = (editDescription.text).toString()
 
+                // select a color for the bucket
                 when (colorCount){
                     0 -> color = "#D3CBF5"
                     1 -> color = "#BCEBAE"
@@ -61,18 +67,20 @@ class AddBucketActivity : AppCompatActivity() {
                     else -> color = "#FFBE9F"
                 }
 
+                // change color count variable
                 if (colorCount == 3){
                     colorCount = 0
                 } else{
                     colorCount ++
                 }
 
-               // val item = Bucket(0, title, 1)
+               // insert item into DB
                 val item = Bucket(0, title, description, color)
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertBucket(item)
                 }
 
+                // go back to main activity
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }
@@ -82,6 +90,7 @@ class AddBucketActivity : AppCompatActivity() {
     override fun onBackPressed() {
         //super.onBackPressed()
 
+        // on back press go back to main activity
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
     }

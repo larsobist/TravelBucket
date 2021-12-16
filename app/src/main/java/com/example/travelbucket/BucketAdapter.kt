@@ -21,11 +21,12 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
     fun setOnItemListener(listener: onItemClickListener) {
         mListener = listener
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = BucketViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return ViewHolder(binding, mListener)
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val bucket = myBuckets.get(position)
         holder.bind(bucket, position)
@@ -33,7 +34,9 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
     override fun getItemCount(): Int {
         return myBuckets.size
     }
+
     fun getSum(bucketId : Int) : Int{
+        // calculate sum of cost of all events in bucket
         var bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
         var sumCosts = 0
         for (event in bucketEvents){
@@ -44,11 +47,11 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): R
     }
 
     inner class ViewHolder(val binding:BucketViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
-        //inner class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(bucket: Bucket, position: Int) {
             binding.textBucket.text = bucket.title
 
             var bucketId = bucket.bucketId
+            // display cost in bucket view
             if(bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event> != emptyList<Event>()){
                 var price = getSum(bucketId)
                 binding.textBucketPrice.text = "Total cost: " + price + " ₩"

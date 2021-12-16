@@ -69,11 +69,11 @@ interface BucketsDAO {
     @Query("SELECT * FROM bucket where bucketId = :bucketId")
     fun getBucket(bucketId: Int): Bucket
 
-    //get all Buckets
+    //get bucket color
     @Query("SELECT color FROM Bucket where bucketId = :bucketId")
     fun getBucketColor(bucketId: Int): String
 
-/*    //get event title
+/*  //get event title
     @Query("SELECT title FROM event where eventId = :eventId")
     fun getEventTitle(eventId: Int): String*/
 }
