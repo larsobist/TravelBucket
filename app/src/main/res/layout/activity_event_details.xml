@@ -18,6 +18,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnShowLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:text="Maps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/line"
         android:layout_width="0dp"
@@ -103,25 +113,6 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:text="3h" />
-
-            <TextView
-                android:id="@+id/textHeaderLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Location" />
-
-            <TextView
-                android:id="@+id/textViewLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:text="https://goo.gl/maps/Akc1kGvrjiz87eJd9"
-                android:textColor="#566DEF" />
 
             <TextView
                 android:id="@+id/textHeaderCosts"

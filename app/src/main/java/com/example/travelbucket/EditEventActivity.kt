@@ -49,7 +49,6 @@ class EditEventActivity : AppCompatActivity() {
         var layoutTitle = findViewById<TextInputLayout>(R.id.textInputLayoutTitle)
         var editCosts = findViewById<TextInputEditText>(R.id.textInputEditTextCosts)
         var layoutCosts = findViewById<TextInputLayout>(R.id.textInputLayoutCosts)
-        var editLocation = findViewById<TextInputEditText>(R.id.textInputEditTextLocation)
         var editNotes = findViewById<TextInputEditText>(R.id.textInputEditTextNotes)
         var editLinks = findViewById<TextInputEditText>(R.id.textInputEditTextLinks)
         var editDuration = findViewById<TextInputEditText>(R.id.textInputEditTextDuration)
@@ -128,16 +127,13 @@ class EditEventActivity : AppCompatActivity() {
             } else {
                 var title = (editTitle.text).toString()
                 var costs = (editCosts.text).toString()
-                var location = (editLocation.text).toString()
                 var notes = (editNotes.text).toString()
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
-                //val item = Event(0, bucketId, title, costs, date, location, notes, links, duration)
-                //Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
-                    //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs, date, location, notes, links, duration)
-                    bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), location, notes, links, duration.toInt())
+                    //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), date, notes, links, duration.toInt())
+                    bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), notes, links, duration.toInt())
                 }
 
                 val intent = Intent(this,EventDetailsActivity::class.java)
@@ -164,7 +160,6 @@ class EditEventActivity : AppCompatActivity() {
         updateDateInView()
         binding.textInputEditTextTitle.setText(event.title)
         binding.textInputEditTextDuration.setText(event.duration.toString())
-        binding.textInputEditTextLocation.setText(event.location)
         binding.textInputEditTextCosts.setText(event.costs.toString())
         binding.textInputEditTextNotes.setText(event.notes)
         binding.textInputEditTextLinks.setText(event.links)

@@ -1,6 +1,7 @@
 package com.example.travelbucket
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,10 +22,13 @@ class EventDetailsActivity : AppCompatActivity() {
         val bucketId = bundle!!.getInt("bucketId")
         val eventId = bundle!!.getInt("eventId")
 
+        var event = bucketsDB.BucketsDAO().getEvent(eventId)
+        var bucket = bucketsDB.BucketsDAO().getBucket(bucketId)
+
         //Set title in top bar
         setTitleInBar(bucketId)
         //Set content in view
-        setContent(eventId)
+        setContent(event)
 
         binding.btnEditEvent.setOnClickListener{
             val intent = Intent(this,EditEventActivity::class.java)
@@ -41,20 +45,28 @@ class EventDetailsActivity : AppCompatActivity() {
             setResult(RESULT_OK, intent)
             startActivity(intent)
         }
+
+        binding.btnShowLocation.setOnClickListener{
+            var location = event.title
+            var city = bucket.title
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("geo:0,0?q=$city $location") }
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }
     }
 
     fun setTitleInBar(bucketId :Int){
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
         supportActionBar?.setTitle(bucketTitle)
     }
-    fun setContent(eventId: Int){
-        var event = bucketsDB.BucketsDAO().getEvent(eventId)
+    fun setContent(event: Event){
         binding.textViewTitle.text = event.title
         val myFormat = "MM/dd/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         binding.textViewDate.text = sdf.format(event.date)
         binding.textViewDuration.text = event.duration.toString()+"h"
-        binding.textViewLocation.text = event.location
         binding.textViewCosts.text = event.costs.toString()+" ₩"
         binding.textViewNotes.text = event.notes
         binding.textViewLinks.text = event.links

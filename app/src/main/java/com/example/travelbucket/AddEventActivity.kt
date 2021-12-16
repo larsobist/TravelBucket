@@ -47,7 +47,6 @@ class AddEventActivity : AppCompatActivity() {
         var layoutTitle = findViewById<TextInputLayout>(R.id.textInputLayoutTitle)
         var editCosts = findViewById<TextInputEditText>(R.id.textInputEditTextCosts)
         var layoutCosts = findViewById<TextInputLayout>(R.id.textInputLayoutCosts)
-        var editLocation = findViewById<TextInputEditText>(R.id.textInputEditTextLocation)
         var editNotes = findViewById<TextInputEditText>(R.id.textInputEditTextNotes)
         var editLinks = findViewById<TextInputEditText>(R.id.textInputEditTextLinks)
         var editDuration = findViewById<TextInputEditText>(R.id.textInputEditTextDuration)
@@ -135,12 +134,11 @@ class AddEventActivity : AppCompatActivity() {
                 Log.d("ITM", "Title: ${date.toString()}")
                 var title = (editTitle.text).toString()
                 var costs = (editCosts.text).toString()
-                var location = (editLocation.text).toString()
                 var notes = (editNotes.text).toString()
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
-                val item = Event(0, bucketId,title, costs.toInt(), date, location, notes, links, duration.toInt())
+                val item = Event(0, bucketId,title, costs.toInt(), date, notes, links, duration.toInt())
                 Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertEvent(item)

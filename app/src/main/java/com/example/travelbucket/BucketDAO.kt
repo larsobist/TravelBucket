@@ -1,6 +1,7 @@
 package com.example.travelbucket
 
 import androidx.room.*
+import java.util.*
 
 @Dao
 interface BucketsDAO {
@@ -23,14 +24,13 @@ interface BucketsDAO {
     @Query("DELETE FROM event WHERE eventId = :eventId")
     fun deleteEvent(eventId: Int)
 
-    //@Query("UPDATE event SET title=:title, costs=:costs, date=:date, location=:location, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
-    @Query("UPDATE event SET title=:title, costs=:costs, location=:location, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
+    //@Query("UPDATE event SET title=:title, costs=:costs, date=:date, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
+    @Query("UPDATE event SET title=:title, costs=:costs, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
     fun updateEvent(
         eventId: Int,
         title: String,
         costs: Int,
         //date: Date,
-        location: String,
         notes: String,
         links: String,
         duration: Int

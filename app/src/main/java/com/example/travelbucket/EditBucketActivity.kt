@@ -34,13 +34,6 @@ class EditBucketActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnChooseImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK).apply {
-                type = "image/*"
-            }
-            startActivityForResult(intent,100)
-        }
-
         binding.btnCancel.setOnClickListener {
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
@@ -69,13 +62,6 @@ class EditBucketActivity : AppCompatActivity() {
         var bucket = bucketsDB.BucketsDAO().getBucket(bucketId)
         binding.textInputEditTitle.setText(bucket.title)
         binding.textInputEditDescription.setText(bucket.description)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            binding.imgBucket.setImageURI(data?.data)
-        }
     }
 
     override fun onBackPressed() {
