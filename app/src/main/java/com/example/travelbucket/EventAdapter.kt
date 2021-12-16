@@ -1,8 +1,6 @@
 package com.example.travelbucket
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -69,12 +67,6 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
 
         }
         init {
-            /*
-            binding.root.setOnClickListener {
-                val intent = Intent(mContext,EventDetailsActivity::class.java)
-                mContext.startActivity(intent)
-            }
-             */
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }

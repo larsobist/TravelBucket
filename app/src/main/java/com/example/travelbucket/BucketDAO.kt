@@ -1,7 +1,6 @@
 package com.example.travelbucket
 
 import androidx.room.*
-import java.util.*
 
 @Dao
 interface BucketsDAO {

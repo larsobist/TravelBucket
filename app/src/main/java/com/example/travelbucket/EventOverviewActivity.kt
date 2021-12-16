@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -150,7 +149,6 @@ class EventOverviewActivity : AppCompatActivity() {
             var costs = event.costs
             sumCosts = sumCosts + costs
         }
-        Log.d("ITM", "SumCosts: $sumCosts")
         return sumCosts
     }
 
@@ -160,7 +158,6 @@ class EventOverviewActivity : AppCompatActivity() {
             var duration = event.duration
             sumDuration = sumDuration + duration
         }
-        Log.d("ITM", "SumDuration: $sumDuration")
         return sumDuration
     }
 

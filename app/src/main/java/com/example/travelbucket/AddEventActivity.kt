@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
@@ -18,10 +17,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import android.R.string.no
-
-
-
 
 class AddEventActivity : AppCompatActivity() {
     val binding by lazy { ActivityAddEventBinding.inflate(layoutInflater) }
@@ -131,7 +126,6 @@ class AddEventActivity : AppCompatActivity() {
             } else if (editDuration.text!!.isEmpty()) {
                 layoutDuration.error = "Duration required!"
             } else {
-                Log.d("ITM", "Title: ${date.toString()}")
                 var title = (editTitle.text).toString()
                 var costs = (editCosts.text).toString()
                 var notes = (editNotes.text).toString()
@@ -139,7 +133,6 @@ class AddEventActivity : AppCompatActivity() {
                 var duration = (editDuration.text).toString()
 
                 val item = Event(0, bucketId,title, costs.toInt(), date, notes, links, duration.toInt())
-                Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertEvent(item)
                 }

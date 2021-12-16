@@ -5,11 +5,9 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.travelbucket.databinding.ActivityEventDetailsBinding
-import com.example.travelbucket.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.*
 

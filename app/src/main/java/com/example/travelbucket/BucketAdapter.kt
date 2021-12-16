@@ -1,22 +1,17 @@
 package com.example.travelbucket
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelbucket.databinding.BucketViewBinding
-import kotlinx.coroutines.CoroutineScope
 
 lateinit var mListener: BucketAdapter.onItemClickListener
 
-class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, private val showDeleteMenu: (Boolean) -> Unit): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
-    var smthSelected = false
+class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(mContext) } //binding of DB
 
     interface onItemClickListener{
@@ -65,30 +60,6 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
 
             binding.cardView.setCardBackgroundColor(Color.parseColor(bucket.color))
 
-        /*
-            binding.cardView.setOnLongClickListener {
-                if (!smthSelected){
-                    binding.cardView.strokeWidth = 8
-                    bucket.selected = true
-                    smthSelected = true
-                    showDeleteMenu(true)
-                }
-                true
-            }
-
-            binding.cardView.setOnClickListener {
-                if (bucket.selected){
-                    binding.cardView.strokeWidth = 0
-                    bucket.selected = false
-                    smthSelected = false
-                    showDeleteMenu(false)
-                }else if (!smthSelected){
-                    val intent = Intent(mContext,EventOverviewActivity::class.java)
-                    mContext.startActivity(intent)
-                }
-            }
-        */
-
             // modify card view constraints
             val constraintSet = ConstraintSet()
             constraintSet.clone(binding.constraintLayout)
@@ -111,12 +82,6 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }
-            /*
-            binding.root.setOnClickListener {
-                val intent = Intent(mContext,EventOverviewActivity::class.java)
-                mContext.startActivity(intent)
-            }
-             */
         }
 
     }

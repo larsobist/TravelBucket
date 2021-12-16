@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
@@ -53,8 +52,6 @@ class EditEventActivity : AppCompatActivity() {
         var editLinks = findViewById<TextInputEditText>(R.id.textInputEditTextLinks)
         var editDuration = findViewById<TextInputEditText>(R.id.textInputEditTextDuration)
         var layoutDuration = findViewById<TextInputLayout>(R.id.textInputLayoutDuration)
-
-        //textDate!!.text = "--/--/----"
 
         // create an OnDateSetListener
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
