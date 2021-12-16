@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.travelbucket.databinding.ActivityEventDetailsBinding
 import com.example.travelbucket.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
@@ -21,6 +23,8 @@ class EventDetailsActivity : AppCompatActivity() {
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
         val eventId = bundle!!.getInt("eventId")
+        /*val eventTitle = bucketsDB.BucketsDAO().getEventTitle(eventId)
+        supportActionBar?.setTitle(eventTitle)*/
 
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
         var bucket = bucketsDB.BucketsDAO().getBucket(bucketId)
@@ -39,11 +43,22 @@ class EventDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnDeleteEvent.setOnClickListener{
-            val intent = Intent(this,EventOverviewActivity::class.java)
-            intent.putExtra("bucketId", bucketId)
-            bucketsDB.BucketsDAO().deleteEvent(eventId)
-            setResult(RESULT_OK, intent)
-            startActivity(intent)
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Delete")
+            builder.setMessage("Do you want to delete this event?")
+            builder.setPositiveButton("Delete") { dialog, which ->
+                Toast.makeText(applicationContext, "Event was deleted", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this,EventOverviewActivity::class.java)
+                intent.putExtra("bucketId", bucketId)
+                bucketsDB.BucketsDAO().deleteEvent(eventId)
+                setResult(RESULT_OK, intent)
+                startActivity(intent)
+
+            }
+            builder.setNegativeButton("Cancel") { dialog, which ->
+
+            }
+            builder.show()
         }
 
         binding.btnShowLocation.setOnClickListener{

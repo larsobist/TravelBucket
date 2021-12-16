@@ -69,4 +69,8 @@ interface BucketsDAO {
     @Transaction
     @Query("SELECT * FROM bucket where bucketId = :bucketId")
     fun getBucket(bucketId: Int): Bucket
+
+/*    //get event title
+    @Query("SELECT title FROM event where eventId = :eventId")
+    fun getEventTitle(eventId: Int): String*/
 }
