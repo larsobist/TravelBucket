@@ -22,8 +22,6 @@ class EventDetailsActivity : AppCompatActivity() {
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
         val eventId = bundle!!.getInt("eventId")
-        /*val eventTitle = bucketsDB.BucketsDAO().getEventTitle(eventId)
-        supportActionBar?.setTitle(eventTitle)*/
 
         // get event and bucket
         var event = bucketsDB.BucketsDAO().getEvent(eventId)
@@ -80,12 +78,6 @@ class EventDetailsActivity : AppCompatActivity() {
 
         // open link in browser
         binding.btnLinks.setOnClickListener{
-            /*var url = event.links
-            val webpage: Uri = Uri.parse(url)
-            val intent = Intent(Intent.ACTION_VIEW, webpage)
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }*/
             var url = event.links
             val intent = Intent(Intent.ACTION_WEB_SEARCH).apply {
                 putExtra(SearchManager.QUERY, url )
@@ -115,7 +107,6 @@ class EventDetailsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
 

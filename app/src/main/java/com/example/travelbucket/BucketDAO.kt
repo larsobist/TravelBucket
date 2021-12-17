@@ -23,13 +23,11 @@ interface BucketsDAO {
     @Query("DELETE FROM event WHERE eventId = :eventId")
     fun deleteEvent(eventId: Int)
 
-    //@Query("UPDATE event SET title=:title, costs=:costs, date=:date, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
     @Query("UPDATE event SET title=:title, costs=:costs, notes=:notes, links=:links, duration=:duration WHERE eventId = :eventId")
     fun updateEvent(
         eventId: Int,
         title: String,
         costs: Int,
-        //date: Date,
         notes: String,
         links: String,
         duration: Int
@@ -72,8 +70,4 @@ interface BucketsDAO {
     //get bucket color
     @Query("SELECT color FROM Bucket where bucketId = :bucketId")
     fun getBucketColor(bucketId: Int): String
-
-/*  //get event title
-    @Query("SELECT title FROM event where eventId = :eventId")
-    fun getEventTitle(eventId: Int): String*/
 }

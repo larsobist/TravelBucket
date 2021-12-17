@@ -88,7 +88,6 @@ class EditBucketActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
 

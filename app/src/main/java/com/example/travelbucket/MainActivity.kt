@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         reversedBuckets= myBuckets.reversed().toMutableList()
         val bucketAdapter = BucketAdapter(this, reversedBuckets) //tell the numbersAdapter
         binding.recyclerBuckets.adapter = bucketAdapter //display the data
-        // if item is cicked, go to event overview activity
+        // if item is clicked, go to event overview activity
         bucketAdapter.setOnItemListener(object : BucketAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
                 val intent = Intent(this@MainActivity, EventOverviewActivity::class.java)
@@ -54,6 +54,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
+        //nothing should happen
     }
 }

@@ -131,9 +131,7 @@ class EditEventActivity : AppCompatActivity() {
                 var duration = (editDuration.text).toString()
 
                 // insert item into DB
-
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
-                    //bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), date, notes, links, duration.toInt())
                     bucketsDB.BucketsDAO().updateEvent(eventId, title, costs.toInt(), notes, links, duration.toInt())
                 }
                 val intent = Intent(this,EventDetailsActivity::class.java)
@@ -170,7 +168,6 @@ class EditEventActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
         val eventId = bundle!!.getInt("eventId")

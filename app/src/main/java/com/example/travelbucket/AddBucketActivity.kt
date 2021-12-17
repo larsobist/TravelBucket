@@ -88,8 +88,6 @@ class AddBucketActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
-
         // on back press go back to main activity
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)

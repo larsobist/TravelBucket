@@ -111,7 +111,6 @@ class EventOverviewActivity : AppCompatActivity() {
     }
 
     fun init(bucketId: Int) {
-        //GlobalScope.launch(Dispatchers.IO) { //get all the data saved in the DB
         bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
         val eventsAdapter = EventAdapter(this, displayedEvents)
         binding.recyclerEvents.adapter = eventsAdapter //display the data
@@ -125,7 +124,6 @@ class EventOverviewActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-
     }
 
     fun getFirstDate(myEvents: MutableList<Event>) : Date{
@@ -202,7 +200,6 @@ class EventOverviewActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         // on back press go back to main activity
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)

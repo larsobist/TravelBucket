@@ -85,7 +85,6 @@ class AddEventActivity : AppCompatActivity() {
                     cal.get(Calendar.DAY_OF_MONTH)
                 ).show()
             }
-
         })
 
         // display error if required field is empty
@@ -122,7 +121,7 @@ class AddEventActivity : AppCompatActivity() {
 
         // save event to DB
         binding.btnSaveEvent.setOnClickListener {
-            // don not save while required fields are empty
+            // do not save while required fields are empty
             if (editTitle.text!!.isEmpty()) {
                 layoutTitle.error = "Title required!"
             } else if (editCosts.text!!.isEmpty()) {
@@ -164,7 +163,6 @@ class AddEventActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
 
