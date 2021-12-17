@@ -8,5 +8,5 @@ data class Bucket(
     @PrimaryKey(autoGenerate = true) val bucketId:Int,
     var title: String,
     var description: String,
-    //var selected: Boolean
+    var color: String
     )

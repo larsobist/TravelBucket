@@ -1,8 +1,6 @@
 package com.example.travelbucket
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -22,6 +20,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
     fun setOnItemListener(listener: onItemClickListener) {
         bListener = listener
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = EventViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
@@ -37,15 +36,17 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
         return myEvents.size
     }
 
+    // update recyclerview
     fun update(updatedList:MutableList<Event>){
         myEvents = updatedList
         this!!.notifyDataSetChanged()
     }
+
     inner class ViewHolder(val binding:EventViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event, position: Int) {
             binding.textTitle.text = event.title
             binding.textDuration.text = "Duration: " + event.duration + "h"
-            binding.textNotes.text = "Notes: " + event.notes
+            binding.textCosts.text = "Cost: " + event.costs  +" ₩"
 
             // modify line constraints
             val constraintSet = ConstraintSet()
@@ -59,22 +60,16 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
             // make line end at right position and add margin of last item
             if (position == myEvents.size-1) {
                 constraintSet.connect(binding.line.id, ConstraintSet.BOTTOM, binding.circle.id, ConstraintSet.BOTTOM)
-                constraintSet.connect(binding.textNotes.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 32.toDp(mContext))
+                constraintSet.connect(binding.textCosts.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 32.toDp(mContext))
             }else {
                 constraintSet.connect(binding.line.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM)
-                constraintSet.connect(binding.textNotes.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 0.toDp(mContext))
+                constraintSet.connect(binding.textCosts.id, ConstraintSet.BOTTOM, PARENT_ID, ConstraintSet.BOTTOM, 0.toDp(mContext))
             }
             // apply constraints to layout
             constraintSet.applyTo(binding.constraintLayout)
 
         }
         init {
-            /*
-            binding.root.setOnClickListener {
-                val intent = Intent(mContext,EventDetailsActivity::class.java)
-                mContext.startActivity(intent)
-            }
-             */
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }
@@ -82,6 +77,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
     }
 }
 
+// convert to dp
 fun Int.toDp(context: Context):Int = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,this.toFloat(),context.resources.displayMetrics
 ).toInt()

@@ -1,21 +1,17 @@
 package com.example.travelbucket
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.travelbucket.databinding.BucketViewBinding
-import kotlinx.coroutines.CoroutineScope
 
 lateinit var mListener: BucketAdapter.onItemClickListener
 
-class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, private val showDeleteMenu: (Boolean) -> Unit): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
-    var smthSelected = false
+class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>): RecyclerView.Adapter<BucketAdapter.ViewHolder>() {
     val bucketsDB: BucketsDB by lazy { BucketsDB.getInstance(mContext) } //binding of DB
 
     interface onItemClickListener{
@@ -25,11 +21,12 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
     fun setOnItemListener(listener: onItemClickListener) {
         mListener = listener
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = BucketViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return ViewHolder(binding, mListener)
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val bucket = myBuckets.get(position)
         holder.bind(bucket, position)
@@ -37,7 +34,9 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
     override fun getItemCount(): Int {
         return myBuckets.size
     }
+
     fun getSum(bucketId : Int) : Int{
+        // calculate sum of cost of all events in bucket
         var bucketEvents = bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event>
         var sumCosts = 0
         for (event in bucketEvents){
@@ -48,43 +47,21 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
     }
 
     inner class ViewHolder(val binding:BucketViewBinding, listener: onItemClickListener): RecyclerView.ViewHolder(binding.root) {
-        //inner class ViewHolder(val binding:BucketViewBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(bucket: Bucket, position: Int) {
             binding.textBucket.text = bucket.title
 
             var bucketId = bucket.bucketId
+            // display cost in bucket view
             if(bucketsDB.BucketsDAO().getEventsOfBucket(bucketId) as MutableList<Event> != emptyList<Event>()){
                 var price = getSum(bucketId)
-                binding.textBucketPrice.text = "Total Cost: " + price + " ₩"
+                binding.textBucketPrice.text = "Total cost: " + price + " ₩"
             }else{
-                binding.textBucketPrice.text = "Total Cost: 0 ₩"
+                binding.textBucketPrice.text = "Total cost: 0 ₩"
             }
 
             binding.textBucketDescription.text = bucket.description
 
-        /*
-            binding.cardView.setOnLongClickListener {
-                if (!smthSelected){
-                    binding.cardView.strokeWidth = 8
-                    bucket.selected = true
-                    smthSelected = true
-                    showDeleteMenu(true)
-                }
-                true
-            }
-
-            binding.cardView.setOnClickListener {
-                if (bucket.selected){
-                    binding.cardView.strokeWidth = 0
-                    bucket.selected = false
-                    smthSelected = false
-                    showDeleteMenu(false)
-                }else if (!smthSelected){
-                    val intent = Intent(mContext,EventOverviewActivity::class.java)
-                    mContext.startActivity(intent)
-                }
-            }
-        */
+            binding.cardView.setCardBackgroundColor(Color.parseColor(bucket.color))
 
             // modify card view constraints
             val constraintSet = ConstraintSet()
@@ -108,12 +85,6 @@ class BucketAdapter(var mContext: Context, val myBuckets:MutableList<Bucket>, pr
             itemView.setOnClickListener {
                 listener.onItemClick(adapterPosition)
             }
-            /*
-            binding.root.setOnClickListener {
-                val intent = Intent(mContext,EventOverviewActivity::class.java)
-                mContext.startActivity(intent)
-            }
-             */
         }
 
     }

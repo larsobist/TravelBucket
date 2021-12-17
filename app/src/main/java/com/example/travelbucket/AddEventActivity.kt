@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
@@ -18,10 +17,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import android.R.string.no
-
-
-
 
 class AddEventActivity : AppCompatActivity() {
     val binding by lazy { ActivityAddEventBinding.inflate(layoutInflater) }
@@ -41,6 +36,7 @@ class AddEventActivity : AppCompatActivity() {
         val bucketId = bundle!!.getInt("bucketId")
         val bucketTitle = bundle!!.getString("bucketTitle")
 
+        // set title in app bar to current bucket
         setTitleInBar(bucketId)
 
         var editTitle = findViewById<TextInputEditText>(R.id.textInputEditTextTitle)
@@ -56,6 +52,7 @@ class AddEventActivity : AppCompatActivity() {
         textDate = binding.textDate
         btnDate = binding.btnDate
 
+        // display correct date in view
         updateDateInView()
 
         // create an OnDateSetListener
@@ -76,7 +73,7 @@ class AddEventActivity : AppCompatActivity() {
             }
         }
 
-        // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
+        // show DatePickerDialog when clicking on change date button
         btnDate!!.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View) {
                 DatePickerDialog(
@@ -88,9 +85,9 @@ class AddEventActivity : AppCompatActivity() {
                     cal.get(Calendar.DAY_OF_MONTH)
                 ).show()
             }
-
         })
 
+        // display error if required field is empty
         editTitle.addTextChangedListener {
             if (editTitle.text!!.isEmpty()) {
                 layoutTitle.error = "Title required!"
@@ -98,7 +95,6 @@ class AddEventActivity : AppCompatActivity() {
                 layoutTitle.error = null
             }
         }
-
         editCosts.addTextChangedListener {
             if (editCosts.text!!.isEmpty()) {
                 layoutCosts.error = "Costs required!"
@@ -106,7 +102,6 @@ class AddEventActivity : AppCompatActivity() {
                 layoutCosts.error = null
             }
         }
-
         editDuration.addTextChangedListener {
             if (editDuration.text!!.isEmpty()) {
                 layoutDuration.error = "Duration required!"
@@ -115,6 +110,7 @@ class AddEventActivity : AppCompatActivity() {
             }
         }
 
+        // go back to event overview activity if cancel button is clicked
         binding.btnCancelEvent.setOnClickListener {
             val intent = Intent(this,EventOverviewActivity::class.java)
             intent.putExtra("bucketId", bucketId)
@@ -123,7 +119,9 @@ class AddEventActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // save event to DB
         binding.btnSaveEvent.setOnClickListener {
+            // do not save while required fields are empty
             if (editTitle.text!!.isEmpty()) {
                 layoutTitle.error = "Title required!"
             } else if (editCosts.text!!.isEmpty()) {
@@ -131,19 +129,19 @@ class AddEventActivity : AppCompatActivity() {
             } else if (editDuration.text!!.isEmpty()) {
                 layoutDuration.error = "Duration required!"
             } else {
-                Log.d("ITM", "Title: ${date.toString()}")
                 var title = (editTitle.text).toString()
                 var costs = (editCosts.text).toString()
                 var notes = (editNotes.text).toString()
                 var links = (editLinks.text).toString()
                 var duration = (editDuration.text).toString()
 
+                // insert item into DB
                 val item = Event(0, bucketId,title, costs.toInt(), date, notes, links, duration.toInt())
-                Log.d("ITM", "$item")
                 GlobalScope.launch(Dispatchers.IO){ //insert it to the DB
                     bucketsDB.BucketsDAO().insertEvent(item)
                 }
 
+                // go back to event overview
                 val intent = Intent(this,EventOverviewActivity::class.java)
                 intent.putExtra("bucketId", bucketId)
                 setResult(RESULT_OK, intent)
@@ -152,21 +150,23 @@ class AddEventActivity : AppCompatActivity() {
         }
     }
     fun setTitleInBar(bucketId :Int){
+        // change title in app bar
         var bucketTitle = bucketsDB.BucketsDAO().getBucketTitle(bucketId)
         supportActionBar?.setTitle("$bucketTitle: Add Event")
     }
 
     private fun updateDateInView() {
+        // display date in correct format
         val myFormat = "MM/dd/yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         textDate!!.text = sdf.format(date)
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val bundle : Bundle?= intent.extras
         val bucketId = bundle!!.getInt("bucketId")
 
+        // on back press go back to event overview activity
         val intent = Intent(this,EventOverviewActivity::class.java)
         intent.putExtra("bucketId", bucketId)
         setResult(RESULT_OK, intent)
