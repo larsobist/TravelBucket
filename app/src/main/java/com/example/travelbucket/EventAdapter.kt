@@ -46,7 +46,7 @@ class EventAdapter(val mContext: Context, var myEvents:MutableList<Event>): Recy
         fun bind(event: Event, position: Int) {
             binding.textTitle.text = event.title
             binding.textDuration.text = "Duration: " + event.duration + "h"
-            binding.textCosts.text = "Cost: " + event.costs
+            binding.textCosts.text = "Cost: " + event.costs  +" ₩"
 
             // modify line constraints
             val constraintSet = ConstraintSet()
